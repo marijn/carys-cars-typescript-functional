@@ -1,7 +1,7 @@
-type DurationOfTrip = {
+export type DurationOfTrip = {
     days: number,
     hours: number,
-    minutes: number
+    minutes: number,
 }
 
 /**
@@ -13,7 +13,7 @@ export const durationOfTripFromString = (input: string): DurationOfTrip => {
     return {
         days: parseInt(parsed.groups['days'], 10),
         hours: parseInt(parsed.groups['hours'], 10),
-        minutes: parseInt(parsed.groups['minutes'], 10)
+        minutes: parseInt(parsed.groups['minutes'], 10),
     }
 };
 

@@ -1,5 +1,5 @@
 import {describe, expect, it} from '@jest/globals';
-import {durationOfTripFromString, durationOfTripToString} from "./DurationOfTrip";
+import {DurationOfTrip, durationOfTripFromString, durationOfTripToString} from "./DurationOfTrip";
 
 describe('Duration of trip', () => {
     let examples: string[] = [
@@ -14,4 +14,14 @@ describe('Duration of trip', () => {
         const expected = input;
         expect(actual).toEqual(expected);
     });
+
+    it("breaks when instantiated", () => {
+        expect(() => {
+            const aDuration: DurationOfTrip = {
+                days: 0,
+                hours: 11,
+                minutes: 1,
+            }
+        }).toThrow();
+    })
 });
