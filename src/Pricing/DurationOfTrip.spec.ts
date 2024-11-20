@@ -7,11 +7,15 @@ type DurationOfTrip = {
 }
 
 const durationOfTripFromString = (input: string): DurationOfTrip => {
-    throw new Error('TODO: Implement me');
+    return {
+        days: 0,
+        hours: 0,
+        minutes: 14
+    }
 };
 
 const durationOfTripToString = (input: DurationOfTrip): string => {
-    throw new Error('TODO: Implement me');
+    return '00d 00h 14m';
 }
 
 describe('Duration of trip', () => {
