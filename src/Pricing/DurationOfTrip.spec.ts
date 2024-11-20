@@ -19,9 +19,9 @@ const durationOfTripToString = (input: DurationOfTrip): string => {
 }
 
 describe('Duration of trip', () => {
-    it('converts from and to string', () => {
-        const input = '00d 00h 14m';
+    const input = '00d 00h 14m';
 
+    it('converts from and to string', () => {
         const actual = durationOfTripToString(durationOfTripFromString(input));
 
         const expected = input;
