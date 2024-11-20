@@ -5,6 +5,8 @@ import {
     durationOfTripFromString,
     durationOfTripToString
 } from "./DurationOfTrip";
+import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
+import '@js-joda/timezone';
 
 describe('Duration of trip', () => {
     let examples: string[] = [
@@ -21,8 +23,14 @@ describe('Duration of trip', () => {
     });
 
     it('is deduced from two dates', () => {
-        const start: Date = new Date('2024-09-12 10:22 Europe/Amsterdam');
-        const end: Date = new Date('2024-09-12 10:39 Europe/Amsterdam');
+        const start: ZonedDateTime = ZonedDateTime.of(
+            LocalDateTime.parse("2024-09-12T10:22"),
+            ZoneId.of("UTC+2")
+        );
+        const end: ZonedDateTime = ZonedDateTime.of(
+            LocalDateTime.parse("2024-09-12T10:39"),
+            ZoneId.of("UTC+2")
+        );
 
         const actual = durationOfTripFromStartAndEnd(start, end)
 
