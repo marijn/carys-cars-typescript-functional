@@ -1,7 +1,9 @@
+const durationOfTripBrand = Symbol('durationOfTripBrand');
 export type DurationOfTrip = {
     days: number,
     hours: number,
     minutes: number,
+    _brand: typeof durationOfTripBrand,
 }
 
 /**
@@ -14,6 +16,7 @@ export const durationOfTripFromString = (input: string): DurationOfTrip => {
         days: parseInt(parsed.groups['days'], 10),
         hours: parseInt(parsed.groups['hours'], 10),
         minutes: parseInt(parsed.groups['minutes'], 10),
+        _brand: durationOfTripBrand
     }
 };
 
