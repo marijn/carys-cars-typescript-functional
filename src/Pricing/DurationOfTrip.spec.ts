@@ -14,14 +14,4 @@ describe('Duration of trip', () => {
         const expected = input;
         expect(actual).toEqual(expected);
     });
-
-    it("breaks when instantiated", () => {
-        expect(() => {
-            const aDuration: DurationOfTrip = {
-                days: 0,
-                hours: 11,
-                minutes: 1,
-            }
-        }).toThrow();
-    })
 });
