@@ -20,6 +20,10 @@ export const durationOfTripFromString = (input: string): DurationOfTrip => {
     }
 };
 
+export const durationOfTripFromStartAndEnd = (start: Date, end: Date) => {
+    throw new Error('TODO: Implement me')
+};
+
 export const durationOfTripToString = (input: DurationOfTrip): string => {
     const daysWithLeadingZeroes = input.days.toString(10).padStart(2, "0");
     const hoursWithLeadingZeroes = input.hours.toString(10).padStart(2, "0");

@@ -1,5 +1,10 @@
 import {describe, expect, it} from '@jest/globals';
-import {DurationOfTrip, durationOfTripFromString, durationOfTripToString} from "./DurationOfTrip";
+import {
+    DurationOfTrip,
+    durationOfTripFromStartAndEnd,
+    durationOfTripFromString,
+    durationOfTripToString
+} from "./DurationOfTrip";
 
 describe('Duration of trip', () => {
     let examples: string[] = [
@@ -14,4 +19,14 @@ describe('Duration of trip', () => {
         const expected = input;
         expect(actual).toEqual(expected);
     });
+
+    it('is deduced from two dates', () => {
+        const start: Date = new Date('2024-09-12 10:22 Europe/Amsterdam');
+        const end: Date = new Date('2024-09-12 10:39 Europe/Amsterdam');
+
+        const actual = durationOfTripFromStartAndEnd(start, end)
+
+        const expected = durationOfTripFromString('00d 00h 17m');
+        expect(actual).toEqual(expected);
+    })
 });
