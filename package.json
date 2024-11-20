@@ -1,8 +1,10 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "@js-joda/timezone": "^2.21.1",
+    "js-joda": "^1.11.0"
+  },
+  "devDependencies": {
     "jest": "^29.7.0",
-    "js-joda": "^1.11.0",
     "ts-jest": "^29.2.5"
   }
 }
