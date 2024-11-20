@@ -6,6 +6,9 @@ type DurationOfTrip = {
     minutes: number
 }
 
+/**
+ * @param input (E.g. "01d 23h 11m")
+ */
 const durationOfTripFromString = (input: string): DurationOfTrip => {
     const parsed = input.match(/^(?<days>[0-9]{2})d (?<hours>[0-9]{2})h (?<minutes>[0-9]{2})m$/);
 
