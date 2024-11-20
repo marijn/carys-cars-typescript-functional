@@ -7,15 +7,17 @@ type DurationOfTrip = {
 }
 
 const durationOfTripFromString = (input: string): DurationOfTrip => {
+    const parsed = input.match(/^(?<days>[0-9]{2})d (?<hours>[0-9]{2})h (?<minutes>[0-9]{2})m$/);
+
     return {
-        days: 0,
-        hours: 0,
-        minutes: 14
+        days: parseInt(parsed.groups['days'], 10),
+        hours: parseInt(parsed.groups['hours'], 10),
+        minutes: parseInt(parsed.groups['minutes'], 10)
     }
 };
 
 const durationOfTripToString = (input: DurationOfTrip): string => {
-    return '00d 00h 14m';
+    return `00d ${input.hours.toString(10).padStart(2, "0")}h ${input.minutes.toString(10).padStart(2, "0")}m`;
 }
 
 describe('Duration of trip', () => {
