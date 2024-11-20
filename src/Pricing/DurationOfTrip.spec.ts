@@ -19,8 +19,9 @@ const durationOfTripFromString = (input: string): DurationOfTrip => {
 const durationOfTripToString = (input: DurationOfTrip): string => {
     const daysWithLeadingZeroes = input.days.toString(10).padStart(2, "0");
     const hoursWithLeadingZeroes = input.hours.toString(10).padStart(2, "0");
+    const minutesWithLeadingZeroes = input.minutes.toString(10).padStart(2, "0");
 
-    return `${daysWithLeadingZeroes}d ${hoursWithLeadingZeroes}h ${input.minutes.toString(10).padStart(2, "0")}m`;
+    return `${daysWithLeadingZeroes}d ${hoursWithLeadingZeroes}h ${minutesWithLeadingZeroes}m`;
 }
 
 describe('Duration of trip', () => {
