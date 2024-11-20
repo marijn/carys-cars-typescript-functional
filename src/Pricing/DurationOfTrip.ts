@@ -1,4 +1,4 @@
-import {ZonedDateTime} from "js-joda";
+import {Duration, ZonedDateTime} from "js-joda";
 
 const durationOfTripBrand = Symbol('durationOfTripBrand');
 export type DurationOfTrip = {
@@ -23,7 +23,14 @@ export const durationOfTripFromString = (input: string): DurationOfTrip => {
 };
 
 export const durationOfTripFromStartAndEnd = (start: ZonedDateTime, end: ZonedDateTime) => {
-    throw new Error('TODO: Implement me')
+    const delta = Duration.between(start, end);
+
+    return {
+        days: delta.toDays(),
+        hours: delta.toHours(),
+        minutes: delta.toMinutes(),
+        _brand: durationOfTripBrand
+    }
 };
 
 export const durationOfTripToString = (input: DurationOfTrip): string => {
