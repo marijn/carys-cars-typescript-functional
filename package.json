@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@js-joda/timezone": "^2.21.1",
+    "@types/dinero.js": "^1.9.4",
+    "dinero.js": "^1.9.1",
     "js-joda": "^1.11.0"
   },
   "devDependencies": {

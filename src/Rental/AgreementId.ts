@@ -1,4 +1,4 @@
-type AgreementId = `agreement:${string}`
+export type AgreementId = `agreement:${string}`
 
 export class SorryUnsupportedAgreementId extends Error {
     constructor(
