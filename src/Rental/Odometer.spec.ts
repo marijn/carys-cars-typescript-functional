@@ -1,13 +1,18 @@
 import {describe, expect, it} from "@jest/globals";
 
-type Odometer = `${number} km`;
+type Odometer<
+    Before extends number = number,
+    After extends number = number
+> = `${Before}.${After} km`;
 
 const odometerToString: (input: Odometer) => string = (input) => {
     return input;
 };
 
 const odometerFromString: (input: string) => Odometer = (input) => {
-    return '1739.7 km';
+    const parsed = input.match(/^(?<before>[0-9]+).(?<after>[0-9]) km$/);
+
+    return `${parseFloat(parsed.groups['before'])}.${parseFloat(parsed.groups['after'])} km`;
 };
 
 describe('Odometer', () => {
