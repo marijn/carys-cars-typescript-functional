@@ -11,9 +11,8 @@ const agreementIdToString: (agreementId: AgreementId) => string = (agreementId) 
 };
 
 describe('Agreement ID', () => {
-    const input = "agreement:11111111-1111-1111-1111-111111111111";
     const examples: string[] = [
-        input,
+        "agreement:11111111-1111-1111-1111-111111111111",
     ];
 
     it.each(examples)('is composed of agreement prefix and unique identifier', (input: string) => {
