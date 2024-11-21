@@ -17,7 +17,7 @@ const distanceTraveledFromString: (input: string) => DistanceTraveled = (input) 
     return `${beforeDecimal}.${afterDecimal} km`;
 };
 
-const calculateDistanceTraveled: (start: DistanceTraveled, end: DistanceTraveled) => DistanceTraveled = (start, end) => {
+const calculateDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (start, end) => {
     return '37.6 km';
 };
 
