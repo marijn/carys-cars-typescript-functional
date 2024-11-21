@@ -33,3 +33,11 @@ export const agreementIdFromString: (input: string) => AgreementId = (input) => 
 export const agreementIdToString: (agreementId: AgreementId) => string = (agreementId) => {
     return agreementId;
 };
+
+export const agreementIdToTripId: (agreementId: AgreementId) => TripId = (agreementId) => {
+    throw new Error('TODO: Implement me');
+};
+
+export const tripIdToAgreementId: (tripId: TripId) => AgreementId = (agreementId) => {
+    throw new Error('TODO: Implement me');
+};
