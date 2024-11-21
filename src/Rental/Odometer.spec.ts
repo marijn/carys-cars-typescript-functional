@@ -5,7 +5,7 @@ type DistanceTraveled<
     AfterDecimal extends number = number
 > = `${BeforeDecimal}.${AfterDecimal} km`;
 
-const odometerToString: (input: DistanceTraveled) => string = (input) => {
+const distanceTraveledToString: (input: DistanceTraveled) => string = (input) => {
     return input;
 };
 
@@ -28,7 +28,7 @@ describe('Odometer', () => {
     ];
 
     it.each(examples)("expresses distance traveled in kilometers (%s)", (input: string)=> {
-        const actual = odometerToString(odometerFromString(input));
+        const actual = distanceTraveledToString(odometerFromString(input));
 
         const expected = input;
         expect(actual).toEqual(expected);
