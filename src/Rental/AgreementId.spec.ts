@@ -16,6 +16,13 @@ class SorryUnsupportedAgreementId extends Error {
 const agreementIdFromString: (input: string) => AgreementId = (input) => {
     const parsed = input.match(/^agreement:(?<unique>\S*)$/);
 
+    if ( ! /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parsed.groups['unique'])) {
+        throw new SorryUnsupportedAgreementId(
+            'Sorry, the id does not match the expected format ("agreement:${uuid}")',
+            input
+        );
+    }
+
     return `agreement:${parsed.groups['unique']}`;
 };
 
