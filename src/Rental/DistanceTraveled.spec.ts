@@ -34,11 +34,10 @@ describe('Distance traveled', () => {
         expect(actual).toEqual(expected);
     });
 
-    const b: DistanceTraveled = '1519.8 km';
     const distanceTraveled: DistanceTraveled = '37.6 km';
 
     const examplesOfTraveledDistanceBetweenAAndB = [
-        ['1482.2 km', b, distanceTraveled]
+        ['1482.2 km', '1519.8 km', distanceTraveled]
     ];
 
     it.each(examplesOfTraveledDistanceBetweenAAndB)("calculates distance traveled between A and B (a = %s, b = %s, distance traveled = %s)", (a: DistanceTraveled, b: DistanceTraveled, distanceTraveled: DistanceTraveled) => {
