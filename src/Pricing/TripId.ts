@@ -1,0 +1,1 @@
+type TripId = `trip:${string}`
