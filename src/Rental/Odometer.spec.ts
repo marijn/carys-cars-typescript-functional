@@ -17,7 +17,7 @@ const distanceTraveledFromString: (input: string) => DistanceTraveled = (input) 
     return `${beforeDecimal}.${afterDecimal} km`;
 };
 
-const distanceTraveled: (start: DistanceTraveled, end: DistanceTraveled) => DistanceTraveled = (start, end) => {
+const calculateDistanceTraveled: (start: DistanceTraveled, end: DistanceTraveled) => DistanceTraveled = (start, end) => {
     return '37.6 km';
 };
 
@@ -38,7 +38,7 @@ describe('Odometer', () => {
         const start: DistanceTraveled = '1482.2 km';
         const end: DistanceTraveled = '1519.8 km';
 
-        const actual: DistanceTraveled = distanceTraveled(start, end);
+        const actual: DistanceTraveled = calculateDistanceTraveled(start, end);
 
         const expected: DistanceTraveled = '37.6 km';
         expect(actual).toEqual(expected);
