@@ -11,6 +11,13 @@ class SorryUnsupportedAgreementId extends Error {
 
         Object.setPrototypeOf(this, SorryUnsupportedAgreementId.prototype);
     }
+
+    static becauseItDoesNotMatchTheExpectedFormat(input: string): SorryUnsupportedAgreementId {
+        return new SorryUnsupportedAgreementId(
+            'Sorry, the id does not match the expected format ("agreement:${uuid}")',
+            input
+        );
+    }
 }
 
 const agreementIdFromString: (input: string) => AgreementId = (input) => {
@@ -20,10 +27,7 @@ const agreementIdFromString: (input: string) => AgreementId = (input) => {
     const poorPersonsUuidTest = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
     if ( ! poorPersonsUuidTest.test(parsed.groups['unique'])) {
-        throw new SorryUnsupportedAgreementId(
-            'Sorry, the id does not match the expected format ("agreement:${uuid}")',
-            input
-        );
+        throw SorryUnsupportedAgreementId.becauseItDoesNotMatchTheExpectedFormat(input);
     }
 
     return `agreement:${parsed.groups['unique']}`;
