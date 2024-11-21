@@ -19,7 +19,7 @@ describe('Distance traveled', () => {
         expect(actual).toEqual(expected);
     });
 
-    const examplesOfTraveledDistanceBetweenAAndB = [
+    const examplesOfTraveledDistanceBetweenAAndB: [DistanceTraveled, DistanceTraveled, DistanceTraveled][] = [
         ['1482.2 km', '1519.8 km', '37.6 km'],
         ['482.0 km', '482.0 km', '0.0 km'],
         ['7192.0 km', '7198.2 km', '6.2 km'],
