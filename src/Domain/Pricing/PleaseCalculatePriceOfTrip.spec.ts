@@ -1,4 +1,4 @@
-import {describe} from "@jest/globals";
+import {describe, it} from "@jest/globals";
 import {CommandHandlingScenario} from "../../Infrastructure/Decider/Testing/CommandHandlingScenario";
 import {PriceOfTripWasCalculated} from "./PriceOfTripWasCalculated";
 import {PleaseCalculatePriceOfTrip} from "./PleaseCalculatePriceOfTrip";
@@ -11,8 +11,8 @@ type PricingCommands = | PleaseCalculatePriceOfTrip;
 describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
 
-    describe('Happy path :-)', () => {
-        scenario
+    it('Happy path :-)', async () => {
+        return scenario
             .when({
                 _named: "Please calculate price of trip",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
