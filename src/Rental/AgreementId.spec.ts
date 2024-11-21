@@ -3,11 +3,13 @@ import {describe, expect, it} from "@jest/globals";
 type AgreementId = `agreement:${string}`
 
 const agreementIdFromString: (input: string) => AgreementId = (input) => {
-    return "agreement:11111111-1111-1111-1111-111111111111";
+    const parsed = input.match(/^agreement:(?<unique>\S*)$/);
+
+    return `agreement:${parsed.groups['unique']}`;
 };
 
 const agreementIdToString: (agreementId: AgreementId) => string = (agreementId) => {
-    return "agreement:11111111-1111-1111-1111-111111111111";
+    return agreementId;
 };
 
 describe('Agreement ID', () => {
