@@ -1,9 +1,9 @@
 import {describe, expect, it} from "@jest/globals";
 
 type Odometer<
-    Before extends number = number,
+    BeforeDecimal extends number = number,
     After extends number = number
-> = `${Before}.${After} km`;
+> = `${BeforeDecimal}.${After} km`;
 
 const odometerToString: (input: Odometer) => string = (input) => {
     return input;
