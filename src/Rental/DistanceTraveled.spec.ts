@@ -36,11 +36,12 @@ describe('Distance traveled', () => {
 
     const a: DistanceTraveled = '1482.2 km';
     const b: DistanceTraveled = '1519.8 km';
+    const distanceTraveled: DistanceTraveled = '37.6 km';
 
     it("calculates distance traveled between A and B", () => {
         const actual: DistanceTraveled = calculateDistanceTraveled(a, b);
 
-        const expected: DistanceTraveled = '37.6 km';
+        const expected: DistanceTraveled = distanceTraveled;
         expect(actual).toEqual(expected);
     });
 });
