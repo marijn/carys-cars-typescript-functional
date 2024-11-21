@@ -12,10 +12,10 @@ const odometerFromString: (input: string) => Odometer = (input) => {
 
 describe('Odometer', () => {
     const odometerAsString = '1739.7 km';
-    it("expresses distance traveled in kilometers", ()=> {
-        const actual = odometerToString(odometerFromString(odometerAsString));
+    it.each([odometerAsString])("expresses distance traveled in kilometers", (input: string)=> {
+        const actual = odometerToString(odometerFromString(input));
 
-        const expected = odometerAsString;
+        const expected = input;
         expect(actual).toEqual(expected);
     });
 });
