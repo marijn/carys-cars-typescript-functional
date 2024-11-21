@@ -12,7 +12,11 @@ const odometerFromString: (input: string) => Odometer = (input) => {
 
 describe('Odometer', () => {
     const odometerAsString = '1739.7 km';
-    it.each([odometerAsString])("expresses distance traveled in kilometers", (input: string)=> {
+    const examples: string[] = [
+        odometerAsString
+    ];
+
+    it.each(examples)("expresses distance traveled in kilometers", (input: string)=> {
         const actual = odometerToString(odometerFromString(input));
 
         const expected = input;
