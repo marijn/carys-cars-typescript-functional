@@ -35,9 +35,9 @@ export const agreementIdToString: (agreementId: AgreementId) => string = (agreem
 };
 
 export const agreementIdToTripId: (agreementId: AgreementId) => TripId = (agreementId) => {
-    throw new Error('TODO: Implement me');
+    return agreementId.replace('agreement:', 'trip:') as TripId;
 };
 
 export const tripIdToAgreementId: (tripId: TripId) => AgreementId = (agreementId) => {
-    throw new Error('TODO: Implement me');
+    return agreementId.replace('trip:', 'agreement:') as AgreementId;
 };
