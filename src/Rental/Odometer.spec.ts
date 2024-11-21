@@ -21,7 +21,7 @@ const calculateDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => D
     return '37.6 km';
 };
 
-describe('Odometer', () => {
+describe('Distance traveled', () => {
     const examples: string[] = [
         '1739.7 km',
         '5371.0 km',
