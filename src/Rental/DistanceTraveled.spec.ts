@@ -34,7 +34,7 @@ describe('Distance traveled', () => {
         expect(actual).toEqual(expected);
     });
 
-    it("calculates distance traveled", () => {
+    it("calculates distance traveled between A and B", () => {
         const a: DistanceTraveled = '1482.2 km';
         const b: DistanceTraveled = '1519.8 km';
 
