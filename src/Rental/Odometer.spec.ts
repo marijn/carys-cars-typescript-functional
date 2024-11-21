@@ -11,8 +11,9 @@ const odometerToString: (input: Odometer) => string = (input) => {
 
 const odometerFromString: (input: string) => Odometer = (input) => {
     const parsed = input.match(/^(?<before>[0-9]+).(?<after>[0-9]) km$/);
+    const beforeDecimal = parseFloat(parsed.groups['before']);
 
-    return `${parseFloat(parsed.groups['before'])}.${parseFloat(parsed.groups['after'])} km`;
+    return `${beforeDecimal}.${parseFloat(parsed.groups['after'])} km`;
 };
 
 describe('Odometer', () => {
