@@ -18,7 +18,11 @@ const odometerFromString: (input: string) => Odometer = (input) => {
 };
 
 const distanceTraveled: (start: Odometer, end: Odometer) => Odometer = (start, end) => {
-    throw new Error('TODO: Implement me')
+    const delta = parseFloat(end) - parseFloat(start);
+    const beforeDecimal: number = Math.floor(delta);
+    const afterDecimal: number = parseInt(((delta - beforeDecimal) * 10).toFixed(0));
+
+    return `${beforeDecimal}.${afterDecimal} km`;
 };
 
 describe('Odometer', () => {
