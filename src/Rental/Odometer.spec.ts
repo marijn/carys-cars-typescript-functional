@@ -17,6 +17,10 @@ const odometerFromString: (input: string) => Odometer = (input) => {
     return `${beforeDecimal}.${afterDecimal} km`;
 };
 
+const distanceTraveled: (start: Odometer, end: Odometer) => Odometer = (start, end) => {
+    throw new Error('TODO: Implement me')
+};
+
 describe('Odometer', () => {
     const examples: string[] = [
         '1739.7 km',
@@ -27,6 +31,16 @@ describe('Odometer', () => {
         const actual = odometerToString(odometerFromString(input));
 
         const expected = input;
+        expect(actual).toEqual(expected);
+    });
+
+    it("calculates distance traveled", () => {
+        const start: Odometer = '1482.2 km';
+        const end: Odometer = '1519.8 km';
+
+        const actual: Odometer = distanceTraveled(start, end);
+
+        const expected: Odometer = '37.6 km';
         expect(actual).toEqual(expected);
     });
 });
