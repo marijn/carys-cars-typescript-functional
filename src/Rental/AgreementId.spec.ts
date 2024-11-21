@@ -16,8 +16,7 @@ describe('Agreement ID', () => {
         input,
     ];
 
-    it.each(examples)('is composed of agreement prefix and unique identifier', () => {
-
+    it.each(examples)('is composed of agreement prefix and unique identifier', (input: string) => {
         const actual: string = agreementIdToString(agreementIdFromString(input));
 
         const expected = input;
