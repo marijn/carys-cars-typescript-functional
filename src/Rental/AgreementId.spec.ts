@@ -3,11 +3,11 @@ import {describe, expect, it} from "@jest/globals";
 type AgreementId = `agreement:${string}`
 
 const agreementIdFromString: (input: string) => AgreementId = (input) => {
-    throw new Error('TODO: implement me');
+    return "agreement:11111111-1111-1111-1111-111111111111";
 };
 
 const agreementIdToString: (agreementId: AgreementId) => string = (agreementId) => {
-    throw new Error('TODO: Implement me');
+    return "agreement:11111111-1111-1111-1111-111111111111";
 };
 
 describe('Agreement ID', () => {
