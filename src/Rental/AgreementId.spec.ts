@@ -2,6 +2,17 @@ import {describe, expect, it} from "@jest/globals";
 
 type AgreementId = `agreement:${string}`
 
+class SorryUnsupportedAgreementId extends Error {
+    constructor(
+        msg: string,
+        public readonly input: string,
+    ) {
+        super(msg);
+
+        Object.setPrototypeOf(this, SorryUnsupportedAgreementId.prototype);
+    }
+}
+
 const agreementIdFromString: (input: string) => AgreementId = (input) => {
     const parsed = input.match(/^agreement:(?<unique>\S*)$/);
 
@@ -23,5 +34,18 @@ describe('Agreement ID', () => {
 
         const expected = input;
         expect(actual).toEqual(expected);
+    });
+
+    it('guards against unsupported identifiers', () => {
+        const unsupportedIdentifier: string = 'agreement:1743518';
+
+        expect(() => {
+            const actual = agreementIdFromString(unsupportedIdentifier);
+        }).toThrowError(
+            new SorryUnsupportedAgreementId(
+                'Sorry, the id does not match the expected format ("agreement:${uuid}")',
+                unsupportedIdentifier
+            )
+        )
     });
 });
