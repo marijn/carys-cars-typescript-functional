@@ -38,7 +38,9 @@ describe('Distance traveled', () => {
     const b: DistanceTraveled = '1519.8 km';
     const distanceTraveled: DistanceTraveled = '37.6 km';
 
-    const examplesOfTraveledDistanceBetweenAAndB = [[a, b, distanceTraveled]];
+    const examplesOfTraveledDistanceBetweenAAndB = [
+        [a, b, distanceTraveled]
+    ];
 
     it.each(examplesOfTraveledDistanceBetweenAAndB)("calculates distance traveled between A and B (a = %s, b = %s, distance traveled = %s)", (a: DistanceTraveled, b: DistanceTraveled, distanceTraveled: DistanceTraveled) => {
         const actual: DistanceTraveled = calculateDistanceTraveled(a, b);
