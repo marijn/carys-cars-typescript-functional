@@ -9,7 +9,7 @@ const distanceTraveledToString: (input: DistanceTraveled) => string = (input) =>
     return input;
 };
 
-const odometerFromString: (input: string) => DistanceTraveled = (input) => {
+const distanceTraveledFromString: (input: string) => DistanceTraveled = (input) => {
     const parsed = input.match(/^(?<beforeDecimal>[0-9]+).(?<afterDecimal>[0-9]) km$/);
     const beforeDecimal = parseInt(parsed.groups['beforeDecimal'], 10);
     const afterDecimal = parseInt(parsed.groups['afterDecimal'], 10);
@@ -28,7 +28,7 @@ describe('Odometer', () => {
     ];
 
     it.each(examples)("expresses distance traveled in kilometers (%s)", (input: string)=> {
-        const actual = distanceTraveledToString(odometerFromString(input));
+        const actual = distanceTraveledToString(distanceTraveledFromString(input));
 
         const expected = input;
         expect(actual).toEqual(expected);
