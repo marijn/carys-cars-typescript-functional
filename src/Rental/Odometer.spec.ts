@@ -15,7 +15,7 @@ describe('Odometer', () => {
         '1739.7 km'
     ];
 
-    it.each(examples)("expresses distance traveled in kilometers", (input: string)=> {
+    it.each(examples)("expresses distance traveled in kilometers (%s)", (input: string)=> {
         const actual = odometerToString(odometerFromString(input));
 
         const expected = input;
