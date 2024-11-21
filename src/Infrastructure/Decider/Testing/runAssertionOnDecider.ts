@@ -11,7 +11,7 @@ export const runAssertionOnDecider =
             const actual = await decider.decide(when, initialState);
 
             const expected = then;
-            expect(actual).toEqual(expected);
+            expect(JSON.stringify(actual)).toEqual(JSON.stringify(expected));
 
             return Promise.resolve();
         };
