@@ -8,15 +8,30 @@ import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAss
 import {Decider} from "../../Infrastructure/Decider/Decider";
 import {launchingPricing, PricingPolicy} from "./LaunchingPricing";
 
+type TripNotPricedState = Readonly<{
+    _named: "TripNotPricedState",
+}>;
+
+type TripPricedState = Readonly<{
+    _named: "TripPricedState",
+    totalPrice: Dinero.Dinero;
+}>;
+
 type PricingEvents = | PriceOfTripWasCalculated;
 type PricingCommands = | PleaseCalculatePriceOfTrip;
-type PricingStates = {}
+type PricingStates =
+    | TripNotPricedState
+    | TripPricedState;
 
 const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = {
     decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
         switch (command._named) {
             case "Please calculate price of trip": {
                 const pricingPolicy: PricingPolicy = launchingPricing;
+
+                if ('TripPricedState' === state._named) {
+                    return Promise.resolve([]);
+                }
 
                 return Promise.resolve([
                     {
@@ -34,13 +49,25 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
         }
     },
     evolve(state: PricingStates, event: PricingEvents): PricingStates {
-        return state;
+        switch (event._named) {
+            case "Price of trip was calculated": {
+                return {
+                    _named: "TripPricedState",
+                    totalPrice: event.totalPrice,
+                };
+            }
+            default: {
+                return state;
+            }
+        }
     },
     identify(command: PricingCommands): TripId {
         throw new Error('TODO: Implement me');
     },
     initialState(): PricingStates {
-        return {};
+        return {
+            _named: "TripNotPricedState",
+        };
     }
 };
 
