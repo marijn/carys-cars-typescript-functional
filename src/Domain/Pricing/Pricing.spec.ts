@@ -14,7 +14,8 @@ describe('Pricing', () => {
             const tripDuration: DurationOfTrip = durationOfTripFromString('00d 00h 17m');
             const actual: Dinero.Dinero = launchingPricing(tripDistance, tripDuration);
 
-            const expected: Dinero.Dinero = Dinero({amount: 595, currency: "EUR", precision: 2});
+            const totalTripPrice = Dinero({amount: 595, currency: "EUR", precision: 2});
+            const expected: Dinero.Dinero = totalTripPrice;
             expect(actual.toObject()).toEqual(expected.toObject());
         });
     });
