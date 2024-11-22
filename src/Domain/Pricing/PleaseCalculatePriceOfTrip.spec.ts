@@ -22,7 +22,7 @@ type PricingStates =
     | TripIsNotPriced
     | TripIsPriced;
 
-const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = {
+const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = {
     decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
         switch (command._named) {
             case "Please calculate price of trip": {
@@ -92,7 +92,7 @@ describe('Please calculate price of trip', () => {
                 totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
             })
-            .assertScenario(runAssertionOnDecider(decider));
+            .assertScenario(runAssertionOnDecider(pricingDecider));
     });
 
     it('is ignored when nothing changed', async () => {
@@ -116,6 +116,6 @@ describe('Please calculate price of trip', () => {
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
             })
             .thenNothingShouldHaveHappened()
-            .assertScenario(runAssertionOnDecider(decider));
+            .assertScenario(runAssertionOnDecider(pricingDecider));
     });
 });
