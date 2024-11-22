@@ -69,4 +69,28 @@ describe('Please calculate price of trip', () => {
             })
             .assertScenario(runAssertionOnDecider(decider));
     });
+
+    it('is ignored when nothing changed', async () => {
+        return scenario
+            .given({
+                _named: "Price of trip was calculated",
+                tripId: "trip:11111111-1111-1111-1111-111111111111",
+                agreementId: "agreement:11111111-1111-1111-1111-111111111111",
+                durationOfTrip: durationOfTripFromString("00d 00h 17m"),
+                tripDistance: "19.0 km",
+                pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
+                customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+            })
+            .when({
+                _named: "Please calculate price of trip",
+                tripId: "trip:11111111-1111-1111-1111-111111111111",
+                agreementId: "agreement:11111111-1111-1111-1111-111111111111",
+                durationOfTrip: durationOfTripFromString("00d 00h 17m"),
+                tripDistance: "19.0 km",
+                customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+            })
+            .thenNothingShouldHaveHappened()
+            .assertScenario(runAssertionOnDecider(decider));
+    });
 });
