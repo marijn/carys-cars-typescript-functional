@@ -23,6 +23,7 @@ describe('Distance traveled', () => {
         ['1482.2 km', '1519.8 km', '37.6 km'],
         ['482.0 km', '482.0 km', '0.0 km'],
         ['7192.0 km', '7198.2 km', '6.2 km'],
+        ['301.4 km', '250.0 km', '-51.4 km'],
     ];
 
     it.each(examplesOfTraveledDistanceBetweenAAndB)("calculates distance traveled between A and B (a = %s, b = %s, distance traveled = %s)", (a: DistanceTraveled, b: DistanceTraveled, distanceTraveled: DistanceTraveled) => {
