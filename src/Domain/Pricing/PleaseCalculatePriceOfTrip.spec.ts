@@ -16,6 +16,8 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
     decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
         switch (command._named) {
             case "Please calculate price of trip": {
+                const pricingPolicy = launchingPricing;
+
                 return Promise.resolve([
                     {
                         _named: "Price of trip was calculated",
@@ -24,7 +26,7 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
                         durationOfTrip: command.durationOfTrip,
                         tripDistance: command.tripDistance,
                         pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
-                        totalPrice: launchingPricing(command.tripDistance, command.durationOfTrip),
+                        totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
                         customerId: command.customerId,
                     }
                 ]);
