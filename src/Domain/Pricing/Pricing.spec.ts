@@ -7,11 +7,11 @@ import {launchingPricing} from "./LaunchingPricing";
 describe('Pricing', () => {
     describe('Launching Pricing', () => {
         const examples: [DistanceTraveled, DurationOfTrip, Dinero.Dinero][] = [
-            ['19.0 km', durationOfTripFromString('00d 00h 17m'), Dinero({amount: 595, currency: "EUR", precision: 2})],
-            ['0.0 km', durationOfTripFromString('00d 00h 17m'), Dinero({amount: 595, currency: "EUR", precision: 2})],
-            ['121.6 km', durationOfTripFromString('00d 03h 03m'), Dinero({amount: 6405, currency: "EUR", precision: 2})],
-            ['199.1 km', durationOfTripFromString('01d 00h 09m'), Dinero({amount: 50715, currency: "EUR", precision: 2})],
-            ['301.4 km', durationOfTripFromString('00d 03h 53m'), Dinero({amount: 8716, currency: "EUR", precision: 2})],
+            ['19.0 km', durationOfTripFromString('00d 00h 17m'), Dinero({amount: 425, currency: "EUR", precision: 2})],
+            ['0.0 km', durationOfTripFromString('00d 00h 17m'), Dinero({amount: 425, currency: "EUR", precision: 2})],
+            ['121.6 km', durationOfTripFromString('00d 03h 03m'), Dinero({amount: 4575, currency: "EUR", precision: 2})],
+            ['199.1 km', durationOfTripFromString('01d 00h 09m'), Dinero({amount: 36225, currency: "EUR", precision: 2})],
+            ['301.4 km', durationOfTripFromString('00d 03h 53m'), Dinero({amount: 6386, currency: "EUR", precision: 2})],
         ];
 
         it.each(examples)("Short trip (trip distance = %s, trip duration = %s, total price = %s)", (
