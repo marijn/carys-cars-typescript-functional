@@ -22,8 +22,8 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
                         agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                         durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                         tripDistance: "19.0 km",
-                        pricePerMinute: Dinero({amount: 35, currency: "EUR", precision: 2}),
-                        totalPrice: Dinero({amount: 490, currency: "EUR", precision: 2}),
+                        pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                        totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
                         customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
                     }
                 ]);
@@ -60,8 +60,8 @@ describe('Please calculate price of trip', () => {
                 agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
-                pricePerMinute: Dinero({amount: 35, currency: "EUR", precision: 2}),
-                totalPrice: Dinero({amount: 490, currency: "EUR", precision: 2}),
+                pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
             })
             .assertScenario(runAssertionOnDecider(decider));
