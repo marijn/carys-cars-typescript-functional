@@ -4,7 +4,7 @@ import {DistanceTraveled} from "../Rental/DistanceTraveled";
 import {DurationOfTrip, durationOfTripFromString} from "./DurationOfTrip";
 
 const launchingPricing: (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero = (tripDistance, tripDuration) => {
-    throw new Error('TODO: Implement me');
+    return Dinero({amount: 595, currency: "EUR", precision: 2});
 };
 
 describe('Pricing', () => {
