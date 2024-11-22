@@ -3,9 +3,12 @@ import Dinero from "dinero.js";
 import {DistanceTraveled} from "../Rental/DistanceTraveled";
 import {DurationOfTrip, durationOfTripFromString} from "./DurationOfTrip";
 
+const tripDurationToTotalMinutes: (tripDuration: DurationOfTrip) => number
+    = (tripDuration) => tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 60 * 24;
+
 const launchingPricing: (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero = (tripDistance, tripDuration) => {
     return Dinero({amount: 35, currency: "EUR", precision: 2})
-        .multiply((tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 60 * 24));
+        .multiply(tripDurationToTotalMinutes(tripDuration));
 };
 
 describe('Pricing', () => {
