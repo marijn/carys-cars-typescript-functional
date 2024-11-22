@@ -22,52 +22,52 @@ type PricingStates =
     | TripIsNotPriced
     | TripIsPriced;
 
-const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = {
-    decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
-        switch (command._named) {
-            case "Please calculate price of trip": {
-                const pricingPolicy: PricingPolicy = launchingPricing;
-
-                if ('TripIsPriced' === state._named) {
-                    return Promise.resolve([]);
-                }
-
-                return Promise.resolve([
-                    {
-                        _named: "Price of trip was calculated",
-                        tripId: command.tripId,
-                        agreementId: command.agreementId,
-                        durationOfTrip: command.durationOfTrip,
-                        tripDistance: command.tripDistance,
-                        pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
-                        totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
-                        customerId: command.customerId,
+const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = ((pricingPolicy: PricingPolicy) => {
+    return {
+        decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
+            switch (command._named) {
+                case "Please calculate price of trip": {
+                    if ('TripIsPriced' === state._named) {
+                        return Promise.resolve([]);
                     }
-                ]);
+
+                    return Promise.resolve([
+                        {
+                            _named: "Price of trip was calculated",
+                            tripId: command.tripId,
+                            agreementId: command.agreementId,
+                            durationOfTrip: command.durationOfTrip,
+                            tripDistance: command.tripDistance,
+                            pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                            totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
+                            customerId: command.customerId,
+                        }
+                    ]);
+                }
             }
+        },
+        evolve(state: PricingStates, event: PricingEvents): PricingStates {
+            switch (event._named) {
+                case "Price of trip was calculated": {
+                    return {
+                        _named: "TripIsPriced",
+                    };
+                }
+                default: {
+                    return state;
+                }
+            }
+        },
+        identify(command: PricingCommands): TripId {
+            throw new Error('TODO: Implement me');
+        },
+        initialState(): PricingStates {
+            return {
+                _named: "TripIsNotPriced",
+            };
         }
-    },
-    evolve(state: PricingStates, event: PricingEvents): PricingStates {
-        switch (event._named) {
-            case "Price of trip was calculated": {
-                return {
-                    _named: "TripIsPriced",
-                };
-            }
-            default: {
-                return state;
-            }
-        }
-    },
-    identify(command: PricingCommands): TripId {
-        throw new Error('TODO: Implement me');
-    },
-    initialState(): PricingStates {
-        return {
-            _named: "TripIsNotPriced",
-        };
-    }
-};
+    };
+})(launchingPricing);
 
 describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
