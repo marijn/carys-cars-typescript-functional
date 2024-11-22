@@ -6,6 +6,7 @@ import {durationOfTripFromString} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
 import {Decider} from "../../Infrastructure/Decider/Decider";
+import {launchingPricing} from "./LaunchingPricing";
 
 type PricingEvents = | PriceOfTripWasCalculated;
 type PricingCommands = | PleaseCalculatePriceOfTrip;
@@ -18,13 +19,13 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
                 return Promise.resolve([
                     {
                         _named: "Price of trip was calculated",
-                        tripId: "trip:11111111-1111-1111-1111-111111111111",
-                        agreementId: "agreement:11111111-1111-1111-1111-111111111111",
-                        durationOfTrip: durationOfTripFromString("00d 00h 17m"),
-                        tripDistance: "19.0 km",
+                        tripId: command.tripId,
+                        agreementId: command.agreementId,
+                        durationOfTrip: command.durationOfTrip,
+                        tripDistance: command.tripDistance,
                         pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
-                        totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
-                        customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                        totalPrice: launchingPricing(command.tripDistance, command.durationOfTrip),
+                        customerId: command.customerId,
                     }
                 ]);
             }
