@@ -1,11 +1,11 @@
 import {describe, expect, it} from "@jest/globals";
 import Dinero from "dinero.js";
 import {DistanceTraveled} from "../Rental/DistanceTraveled";
-import {DurationOfTrip, durationOfTripFromString, tripDurationToTotalMinutes} from "./DurationOfTrip";
+import {DurationOfTrip, durationOfTripFromString, durationOfTripToTotalMinutes} from "./DurationOfTrip";
 
 const launchingPricing: (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero = (tripDistance, tripDuration) => {
     return Dinero({amount: 35, currency: "EUR", precision: 2})
-        .multiply(tripDurationToTotalMinutes(tripDuration));
+        .multiply(durationOfTripToTotalMinutes(tripDuration));
 };
 
 describe('Pricing', () => {

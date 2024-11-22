@@ -41,5 +41,5 @@ export const durationOfTripToString = (input: DurationOfTrip): string => {
     return `${daysWithLeadingZeroes}d ${hoursWithLeadingZeroes}h ${minutesWithLeadingZeroes}m`;
 }
 
-export const tripDurationToTotalMinutes: (durationOfTrip: DurationOfTrip) => number
+export const durationOfTripToTotalMinutes: (durationOfTrip: DurationOfTrip) => number
     = (durationOfTrip) => durationOfTrip.minutes + durationOfTrip.hours * 60 + durationOfTrip.days * 60 * 24;
