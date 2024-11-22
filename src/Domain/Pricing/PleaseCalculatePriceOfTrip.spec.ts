@@ -75,7 +75,7 @@ describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
 
     it('Happy path :-)', async () => {
-        const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = buildPricingDecider(launchingPricing);
+        const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
             .when({
@@ -100,7 +100,7 @@ describe('Please calculate price of trip', () => {
     });
 
     it('is ignored when nothing changed', async () => {
-        const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = buildPricingDecider(launchingPricing);
+        const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
             .given({
