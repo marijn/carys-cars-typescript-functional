@@ -8,19 +8,19 @@ import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAss
 import {Decider} from "../../Infrastructure/Decider/Decider";
 import {launchingPricing, PricingPolicy} from "./LaunchingPricing";
 
-type TripNotPricedState = Readonly<{
-    _named: "TripNotPricedState",
+type TripIsNotPriced = Readonly<{
+    _named: "TripIsNotPriced",
 }>;
 
-type TripPricedState = Readonly<{
-    _named: "TripPricedState",
+type TripIsPriced = Readonly<{
+    _named: "TripIsPriced",
 }>;
 
 type PricingEvents = | PriceOfTripWasCalculated;
 type PricingCommands = | PleaseCalculatePriceOfTrip;
 type PricingStates =
-    | TripNotPricedState
-    | TripPricedState;
+    | TripIsNotPriced
+    | TripIsPriced;
 
 const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = {
     decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
@@ -28,7 +28,7 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
             case "Please calculate price of trip": {
                 const pricingPolicy: PricingPolicy = launchingPricing;
 
-                if ('TripPricedState' === state._named) {
+                if ('TripIsPriced' === state._named) {
                     return Promise.resolve([]);
                 }
 
@@ -51,7 +51,7 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
         switch (event._named) {
             case "Price of trip was calculated": {
                 return {
-                    _named: "TripPricedState",
+                    _named: "TripIsPriced",
                 };
             }
             default: {
@@ -64,7 +64,7 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
     },
     initialState(): PricingStates {
         return {
-            _named: "TripNotPricedState",
+            _named: "TripIsNotPriced",
         };
     }
 };
