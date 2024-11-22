@@ -9,8 +9,9 @@ const launchingPricing: (tripDistance: DistanceTraveled, tripDuration: DurationO
 
 describe('Pricing', () => {
     describe('Launching Pricing', () => {
+        const tripDistance: DistanceTraveled = '19.0 km';
+
         it("Short trip", () => {
-            const tripDistance: DistanceTraveled = '19.0 km';
             const tripDuration: DurationOfTrip = durationOfTripFromString('00d 00h 17m');
             const actual: Dinero.Dinero = launchingPricing(tripDistance, tripDuration);
 
