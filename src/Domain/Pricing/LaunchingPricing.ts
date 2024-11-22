@@ -2,7 +2,7 @@ import {calculateDistanceTraveled, DistanceTraveled} from "../Rental/DistanceTra
 import {DurationOfTrip, durationOfTripToTotalMinutes} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 
-type PricingPolicy = (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero;
+export type PricingPolicy = (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero;
 
 export const launchingPricing: PricingPolicy = (
     tripDistance,

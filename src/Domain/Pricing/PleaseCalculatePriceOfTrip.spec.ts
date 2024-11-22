@@ -6,7 +6,7 @@ import {durationOfTripFromString} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
 import {Decider} from "../../Infrastructure/Decider/Decider";
-import {launchingPricing} from "./LaunchingPricing";
+import {launchingPricing, PricingPolicy} from "./LaunchingPricing";
 
 type PricingEvents = | PriceOfTripWasCalculated;
 type PricingCommands = | PleaseCalculatePriceOfTrip;
@@ -16,7 +16,7 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
     decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
         switch (command._named) {
             case "Please calculate price of trip": {
-                const pricingPolicy = launchingPricing;
+                const pricingPolicy: PricingPolicy = launchingPricing;
 
                 return Promise.resolve([
                     {
