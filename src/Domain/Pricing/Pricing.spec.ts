@@ -6,8 +6,7 @@ import {DurationOfTrip, durationOfTripFromString, durationOfTripToTotalMinutes} 
 const launchingPricing: (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip) => Dinero.Dinero = (tripDistance, tripDuration) => {
     const pricePerMinute = Dinero({amount: 35, currency: "EUR", precision: 2});
 
-    return pricePerMinute
-        .multiply(durationOfTripToTotalMinutes(tripDuration));
+    return pricePerMinute.multiply(durationOfTripToTotalMinutes(tripDuration));
 };
 
 describe('Pricing', () => {
