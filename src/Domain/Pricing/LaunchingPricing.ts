@@ -8,7 +8,7 @@ export const launchingPricing: PricingPolicy = (
     tripDistance,
     tripDuration
 ) => {
-    const pricePerMinute = Dinero({amount: 35, currency: "EUR", precision: 2});
+    const pricePerMinute = Dinero({amount: 25, currency: "EUR", precision: 2});
     const allowedDistance: DistanceTraveled = "250.0 km";
     const exceededOrRemaining = calculateDistanceTraveled(tripDistance, allowedDistance);
     const multiplier = Math.floor(Math.abs(parseFloat(exceededOrRemaining)));
