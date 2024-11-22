@@ -12,8 +12,11 @@ describe('Pricing', () => {
         const tripDistance: DistanceTraveled = '19.0 km';
         const tripDuration: DurationOfTrip = durationOfTripFromString('00d 00h 17m');
         const totalTripPrice = Dinero({amount: 595, currency: "EUR", precision: 2});
+        const examples: [DistanceTraveled, DurationOfTrip, Dinero.Dinero][] = [
+            [tripDistance, tripDuration, totalTripPrice],
+        ];
 
-        it.each([[tripDistance, tripDuration, totalTripPrice]])("Short trip", (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip, totalTripPrice: Dinero.Dinero) => {
+        it.each(examples)("Short trip", (tripDistance: DistanceTraveled, tripDuration: DurationOfTrip, totalTripPrice: Dinero.Dinero) => {
             const actual: Dinero.Dinero = launchingPricing(tripDistance, tripDuration);
 
             const expected: Dinero.Dinero = totalTripPrice;
