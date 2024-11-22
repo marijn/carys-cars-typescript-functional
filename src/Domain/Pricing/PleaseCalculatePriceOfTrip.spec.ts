@@ -22,7 +22,9 @@ type PricingStates =
     | TripIsNotPriced
     | TripIsPriced;
 
-const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = ((pricingPolicy: PricingPolicy) => {
+const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingCommands, PricingStates, PricingEvents, TripId> = (
+    pricingPolicy
+) => {
     return {
         decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
             switch (command._named) {
@@ -67,7 +69,9 @@ const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, Tri
             };
         }
     };
-})(launchingPricing);
+};
+
+const pricingDecider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = buildPricingDecider(launchingPricing);
 
 describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
