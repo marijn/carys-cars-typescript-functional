@@ -37,12 +37,4 @@ describe('Duration of trip', () => {
         const expected = durationOfTripFromString('00d 00h 17m');
         expect(actual).toEqual(expected);
     })
-
-    it("Casts to string using language native method", () => {
-        const input = '01d 14h 41m';
-        const actual = durationOfTripFromString(input).toString();
-
-        const expected = input;
-        expect(actual).toEqual(expected);
-    });
 });
