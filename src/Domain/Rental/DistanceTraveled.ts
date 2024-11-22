@@ -20,8 +20,8 @@ export const distanceTraveledFromString: (input: string) => DistanceTraveled = (
 
 export const calculateDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (a, b) => {
     const delta = parseFloat(b) - parseFloat(a);
-    const beforeDecimal: number = Math.floor(delta);
-    const afterDecimal: number = parseInt(((delta - beforeDecimal) * 10).toFixed(0));
+    const beforeDecimal: number = delta > 0 ? Math.floor(delta) : Math.ceil(delta);
+    const afterDecimal: number = Math.abs(parseInt(((delta - beforeDecimal) * 10).toFixed(0)));
 
     return `${beforeDecimal}.${afterDecimal} km`;
 };
