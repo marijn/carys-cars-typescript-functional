@@ -14,7 +14,6 @@ type TripNotPricedState = Readonly<{
 
 type TripPricedState = Readonly<{
     _named: "TripPricedState",
-    totalPrice: Dinero.Dinero;
 }>;
 
 type PricingEvents = | PriceOfTripWasCalculated;
@@ -53,7 +52,6 @@ const decider: Decider<PricingCommands, PricingStates, PricingEvents, TripId> = 
             case "Price of trip was calculated": {
                 return {
                     _named: "TripPricedState",
-                    totalPrice: event.totalPrice,
                 };
             }
             default: {
