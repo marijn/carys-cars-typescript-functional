@@ -12,7 +12,7 @@ export const flatFeePricingWith: (
     return (tripDistance, tripDuration) => {
         const exceededOrRemaining = calculateDistanceTraveled(tripDistance, includedDistance);
         const exceeded: DistanceTraveled = lowestDistanceTraveled('0.0 km', exceededOrRemaining);
-        const multiplier = Math.floor(Math.abs(parseFloat(exceeded)));
+        const multiplier = Math.round(Math.abs(parseFloat(exceeded)));
         const additionalDistanceCharge = pricePerAdditionalKilometer.multiply(multiplier);
 
         return pricePerMinute.multiply(durationOfTripToTotalMinutes(tripDuration)).add(additionalDistanceCharge);
