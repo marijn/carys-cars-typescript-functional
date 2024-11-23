@@ -11,6 +11,7 @@ import {
 } from "./ReportOfMonthlyExpenditure";
 import {AgreementId} from "../Rental/AgreementId";
 import {RentalEnded} from "../Rental/Ending/RentalEnded";
+import {PriceOfTripWasCalculated} from "../Pricing/PriceOfTripWasCalculated";
 
 export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
@@ -51,6 +52,33 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
         }
     };
 
+    const projectPriceOfTripWasCalculated: (event: PriceOfTripWasCalculated) => void = (event) => {
+        const agreement = agreementsByAgreementId[event.agreementId];
+
+        if (!(event.customerId in tripsByCustomer)) {
+            tripsByCustomer[event.customerId] = {};
+        }
+
+        if (!(agreement.month in tripsByCustomer[event.customerId])) {
+            tripsByCustomer[event.customerId][agreement.month] = [];
+        }
+
+        tripsByCustomer[event.customerId][agreement.month].push({
+            agreementId: event.agreementId,
+            durationOfTrip: event.durationOfTrip,
+            odometerEnd: agreement.odometerEnd,
+            odometerStart: agreement.odometerStart,
+            rentalEnded: agreement.rentalEnded,
+            rentalStarted: agreement.rentalStarted,
+            startPosition: agreement.startPosition,
+            endPosition: agreement.endPosition,
+            totalPrice: event.totalPrice,
+            tripDistance: event.tripDistance,
+            tripId: event.tripId,
+            vehicle: event.vehicle
+        });
+    };
+
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
             switch (query._named) {
@@ -67,30 +95,7 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
                     return;
                 }
                 case "Price of trip was calculated": {
-                    const agreement = agreementsByAgreementId[event.agreementId];
-
-                    if (!(event.customerId in tripsByCustomer)) {
-                        tripsByCustomer[event.customerId] = {};
-                    }
-
-                    if (!(agreement.month in tripsByCustomer[event.customerId])) {
-                        tripsByCustomer[event.customerId][agreement.month] = [];
-                    }
-
-                    tripsByCustomer[event.customerId][agreement.month].push({
-                        agreementId: event.agreementId,
-                        durationOfTrip: event.durationOfTrip,
-                        odometerEnd: agreement.odometerEnd,
-                        odometerStart: agreement.odometerStart,
-                        rentalEnded: agreement.rentalEnded,
-                        rentalStarted: agreement.rentalStarted,
-                        startPosition: agreement.startPosition,
-                        endPosition: agreement.endPosition,
-                        totalPrice: event.totalPrice,
-                        tripDistance: event.tripDistance,
-                        tripId: event.tripId,
-                        vehicle: event.vehicle
-                    });
+                    projectPriceOfTripWasCalculated(event);
 
                     return;
                 }
