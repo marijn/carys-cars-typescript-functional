@@ -129,8 +129,6 @@ const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpendit
     };
 }
 
-const reportOfMonthlyExpenditureProjector = inMemoryReportOfMonthlyExpenditureProjector();
-
 describe('Report of monthly expenditure', () => {
     describe('Get report of monthly expenditure by customer', () => {
         it('When no trips were made', async () => {
@@ -146,7 +144,7 @@ describe('Report of monthly expenditure', () => {
                     month: '2020-01',
                     trips: []
                 })
-                .assertScenario(runAssertionsOnProjector(reportOfMonthlyExpenditureProjector));
+                .assertScenario(runAssertionsOnProjector(inMemoryReportOfMonthlyExpenditureProjector()));
         });
 
         it('Single trip', async () => {
@@ -212,7 +210,7 @@ describe('Report of monthly expenditure', () => {
                         },
                     ]
                 })
-                .assertScenario(runAssertionsOnProjector(reportOfMonthlyExpenditureProjector));
+                .assertScenario(runAssertionsOnProjector(inMemoryReportOfMonthlyExpenditureProjector()));
         });
     });
 });
