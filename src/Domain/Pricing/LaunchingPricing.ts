@@ -10,8 +10,8 @@ export const launchingPricing: PricingPolicy = (
 ) => {
     const pricePerMinute = Dinero({amount: 25, currency: "EUR", precision: 2});
     const additionalKilometerFee: Dinero.DineroObject = {amount: 11, currency: "EUR", precision: 2};
-    const allowedDistance: DistanceTraveled = "250.0 km";
-    const exceededOrRemaining = calculateDistanceTraveled(tripDistance, allowedDistance);
+    const includedDistance: DistanceTraveled = "250.0 km";
+    const exceededOrRemaining = calculateDistanceTraveled(tripDistance, includedDistance);
     const multiplier = Math.floor(Math.abs(parseFloat(exceededOrRemaining)));
     const additionalDistanceCharge = exceededOrRemaining.startsWith('-')
         ? Dinero(additionalKilometerFee).multiply(multiplier)
