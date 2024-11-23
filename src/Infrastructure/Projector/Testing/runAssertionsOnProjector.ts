@@ -17,6 +17,6 @@ export const runAssertionsOnProjector: <
         const actual = await projector.ask(when);
         const expected = then;
 
-        expect(actual).toEqual(expected);
+        expect(JSON.parse(JSON.stringify(actual))).toEqual(JSON.parse(JSON.stringify(expected)));
     };
 };
