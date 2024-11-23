@@ -11,7 +11,7 @@ export const distanceTraveledToString: (input: DistanceTraveled) => string = (in
  * @param input (e.g. "241.0 km" or "517.1 km")
  */
 export const distanceTraveledFromString: (input: string) => DistanceTraveled = (input) => {
-    const parsed = input.match(/^(?<beforeDecimal>[0-9]+).(?<afterDecimal>[0-9]) km$/);
+    const parsed = input.match(/^(?<beforeDecimal>-?[0-9]+).(?<afterDecimal>[0-9]) km$/);
     const beforeDecimal = parseInt(parsed.groups['beforeDecimal'], 10);
     const afterDecimal = parseInt(parsed.groups['afterDecimal'], 10);
 

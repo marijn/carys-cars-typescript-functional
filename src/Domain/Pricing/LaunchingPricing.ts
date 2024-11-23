@@ -1,4 +1,4 @@
-import {calculateDistanceTraveled, DistanceTraveled} from "../Rental/DistanceTraveled";
+import {calculateDistanceTraveled, DistanceTraveled, lowestDistanceTraveled} from "../Rental/DistanceTraveled";
 import {DurationOfTrip, durationOfTripToTotalMinutes} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 
@@ -11,10 +11,9 @@ export const flatFeePricingWith: (
 ) => PricingPolicy = (pricePerMinute, pricePerAdditionalKilometer, includedDistance) => {
     return (tripDistance, tripDuration) => {
         const exceededOrRemaining = calculateDistanceTraveled(tripDistance, includedDistance);
-        const multiplier = Math.floor(Math.abs(parseFloat(exceededOrRemaining)));
-        const additionalDistanceCharge = exceededOrRemaining.startsWith('-')
-            ? pricePerAdditionalKilometer.multiply(multiplier)
-            : Dinero({amount: 0, currency: "EUR", precision: 2});
+        const exceeded: DistanceTraveled = lowestDistanceTraveled('0.0 km', exceededOrRemaining);
+        const multiplier = Math.floor(Math.abs(parseFloat(exceeded)));
+        const additionalDistanceCharge = pricePerAdditionalKilometer.multiply(multiplier);
 
         return pricePerMinute.multiply(durationOfTripToTotalMinutes(tripDuration)).add(additionalDistanceCharge);
     }
