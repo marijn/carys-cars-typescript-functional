@@ -3,7 +3,7 @@ import {
     AllYears,
     EndedRentalAgreement,
     ReportingMonth,
-    ReportOfMonthlyExpenditureAnswers,
+    ReportOfMonthlyExpenditureAnswers, ReportOfMonthlyExpenditureByCustomer,
     ReportOfMonthlyExpenditureEvents,
     ReportOfMonthlyExpenditureProjector,
     ReportOfMonthlyExpenditureQueries,
@@ -15,18 +15,24 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
     const tripsByCustomer: { [key: CustomerId]: Partial<Record<ReportingMonth, Trip[]>> } = {};
 
+    const askGetReportOfMonthlyExpenditureByCustomer: (
+        query: ReportOfMonthlyExpenditureQueries
+    ) => ReportOfMonthlyExpenditureByCustomer = (query) => {
+        const trips = query.customerId in tripsByCustomer
+            ? (query.month in tripsByCustomer[query.customerId] ? tripsByCustomer[query.customerId][query.month] : [])
+            : [];
+
+        return {
+            _named: "Report of monthly expenditure by customer",
+            customerId: query.customerId,
+            month: query.month,
+            trips: trips
+        };
+    };
+
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
-            const trips = query.customerId in tripsByCustomer
-                ? (query.month in tripsByCustomer[query.customerId] ? tripsByCustomer[query.customerId][query.month] : [])
-                : [];
-
-            return {
-                _named: "Report of monthly expenditure by customer",
-                customerId: query.customerId,
-                month: query.month,
-                trips: trips
-            };
+            return askGetReportOfMonthlyExpenditureByCustomer(query);
         },
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
             switch (event._named) {

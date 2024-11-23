@@ -38,7 +38,7 @@ export type Trip = {
     totalPrice: Dinero.Dinero
 };
 
-type ReportOfMonthlyExpenditureByCustomer = {
+export type ReportOfMonthlyExpenditureByCustomer = {
     _named: 'Report of monthly expenditure by customer',
     customerId: CustomerId,
     month: ReportingMonth,
