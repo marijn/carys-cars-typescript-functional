@@ -6,6 +6,8 @@ import {runAssertionOnProcessManager} from "../../Infrastructure/ProcessManager/
 import {ProcessManager} from "../../Infrastructure/ProcessManager/ProcessManager";
 import {durationOfTripFromString} from "./DurationOfTrip";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
+import {calculateDistanceTraveled} from "../Rental/DistanceTraveled";
+import {agreementIdToTripId} from "../Rental/AgreementId";
 
 type PricingProcessManagerTriggers = | RentalEnded;
 type PricingProcessManagerSideEffects = | PleaseCalculatePriceOfTrip;
@@ -24,8 +26,18 @@ describe('Pricing process manager', () => {
             PricingProcessManagerTriggers,
             PricingProcessManagerSideEffects
         > = {
-            processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
-                throw new Error('TODO: Implement me');
+            async processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
+                return [
+                    {
+                        _named: "Please calculate price of trip",
+                        tripId: agreementIdToTripId(event.agreementId),
+                        vehicle: event.vehicle,
+                        agreementId: event.agreementId,
+                        durationOfTrip: durationOfTripFromString("00d 00h 21m"),
+                        tripDistance: calculateDistanceTraveled(event.odometerStart, event.odometerEnd),
+                        customerId: event.customerId,
+                    }
+                ]
             },
             subscribesTo: [],
         };
