@@ -22,7 +22,7 @@ export const durationOfTripFromString: (input: string) => DurationOfTrip = (inpu
     }
 };
 
-export const durationOfTripFromStartAndEnd = (start: ZonedDateTime, end: ZonedDateTime): DurationOfTrip => {
+export const durationOfTripFromStartAndEnd: (start: ZonedDateTime, end: ZonedDateTime) => DurationOfTrip = (start, end) => {
     const delta = Duration.between(start, end);
 
     return {
