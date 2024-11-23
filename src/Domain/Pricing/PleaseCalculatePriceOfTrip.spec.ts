@@ -81,6 +81,7 @@ describe('Please calculate price of trip', () => {
             .when({
                 _named: "Please calculate price of trip",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
+                vehicle: "NL:GGS-10-N",
                 agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
@@ -89,6 +90,7 @@ describe('Please calculate price of trip', () => {
             .then({
                 _named: "Price of trip was calculated",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
+                vehicle: "NL:GGS-10-N",
                 agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
@@ -106,6 +108,7 @@ describe('Please calculate price of trip', () => {
             .given({
                 _named: "Price of trip was calculated",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
+                vehicle: "NL:GGS-10-N",
                 agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
@@ -116,6 +119,7 @@ describe('Please calculate price of trip', () => {
             .when({
                 _named: "Please calculate price of trip",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
+                vehicle: "NL:GGS-10-N",
                 agreementId: "agreement:11111111-1111-1111-1111-111111111111",
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
