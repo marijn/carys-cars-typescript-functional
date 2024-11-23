@@ -123,6 +123,7 @@ const projector: Projector<
     },
     subscribesTo: [],
 };
+const reportOfMonthlyExpenditureProjector = projector;
 
 describe('Report of monthly expenditure', () => {
     describe('Get report of monthly expenditure by customer', () => {
@@ -139,7 +140,7 @@ describe('Report of monthly expenditure', () => {
                     month: '2020-01',
                     trips: []
                 })
-                .assertScenario(runAssertionsOnProjector(projector));
+                .assertScenario(runAssertionsOnProjector(reportOfMonthlyExpenditureProjector));
         });
 
         it('Single trip', async () => {
@@ -205,7 +206,7 @@ describe('Report of monthly expenditure', () => {
                         },
                     ]
                 })
-                .assertScenario(runAssertionsOnProjector(projector));
+                .assertScenario(runAssertionsOnProjector(reportOfMonthlyExpenditureProjector));
         });
     });
 });
