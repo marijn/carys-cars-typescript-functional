@@ -20,15 +20,8 @@ export const flatFeePricingWith: (
     }
 };
 
-export const launchingPricing: PricingPolicy = (
-    tripDistance,
-    tripDuration
-) => {
-    const flatFeePricing: PricingPolicy = flatFeePricingWith(
-        Dinero({amount: 25, currency: "EUR", precision: 2}),
-        Dinero({amount: 11, currency: "EUR", precision: 2}),
-        "250.0 km"
-    );
-
-    return flatFeePricing(tripDistance, tripDuration);
-};
+export const launchingPricing: PricingPolicy = flatFeePricingWith(
+    Dinero({amount: 25, currency: "EUR", precision: 2}),
+    Dinero({amount: 11, currency: "EUR", precision: 2}),
+    "250.0 km"
+);
