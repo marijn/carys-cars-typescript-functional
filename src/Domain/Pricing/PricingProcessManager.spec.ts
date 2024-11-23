@@ -11,6 +11,10 @@ import {agreementIdToTripId} from "../Rental/AgreementId";
 
 type PricingProcessManagerTriggers = | RentalEnded;
 type PricingProcessManagerSideEffects = | PleaseCalculatePriceOfTrip;
+type PricingProcessManager = ProcessManager<
+    PricingProcessManagerTriggers,
+    PricingProcessManagerSideEffects
+>;
 
 describe('Pricing process manager', () => {
     const scenario = new ProcessManagerScenario<
@@ -19,10 +23,7 @@ describe('Pricing process manager', () => {
     >();
 
     it('Rental ended => Please calculate price of trip', async (): Promise<void> => {
-        const subjectUnderTest: ProcessManager<
-            PricingProcessManagerTriggers,
-            PricingProcessManagerSideEffects
-        > = {
+        const subjectUnderTest: PricingProcessManager = {
             async processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
                 return [
                     {
