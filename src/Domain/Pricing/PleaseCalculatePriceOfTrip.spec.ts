@@ -37,6 +37,7 @@ const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingComm
                         {
                             _named: "Price of trip was calculated",
                             tripId: command.tripId,
+                            vehicle: command.vehicle,
                             agreementId: command.agreementId,
                             durationOfTrip: command.durationOfTrip,
                             tripDistance: command.tripDistance,
