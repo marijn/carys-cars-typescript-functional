@@ -11,7 +11,7 @@ export type DurationOfTrip = {
 /**
  * @param input (E.g. "01d 23h 11m")
  */
-export const durationOfTripFromString = (input: string): DurationOfTrip => {
+export const durationOfTripFromString: (input: string) => DurationOfTrip = (input) => {
     const parsed = input.match(/^(?<days>[0-9]{2})d (?<hours>[0-9]{2})h (?<minutes>[0-9]{2})m$/);
 
     return {
