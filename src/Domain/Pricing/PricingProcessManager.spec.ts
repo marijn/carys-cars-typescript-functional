@@ -4,7 +4,7 @@ import {PleaseCalculatePriceOfTrip} from "./PleaseCalculatePriceOfTrip";
 import {RentalEnded} from "../Rental/Ending/RentalEnded";
 import {runAssertionOnProcessManager} from "../../Infrastructure/ProcessManager/Testing/runAssertionOnProcessManager";
 import {ProcessManager} from "../../Infrastructure/ProcessManager/ProcessManager";
-import {durationOfTripFromString} from "./DurationOfTrip";
+import {durationOfTripFromStartAndEnd, durationOfTripFromString} from "./DurationOfTrip";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
 import {calculateDistanceTraveled} from "../Rental/DistanceTraveled";
 import {agreementIdToTripId} from "../Rental/AgreementId";
@@ -31,7 +31,7 @@ describe('Pricing process manager', () => {
                         tripId: agreementIdToTripId(event.agreementId),
                         vehicle: event.vehicle,
                         agreementId: event.agreementId,
-                        durationOfTrip: durationOfTripFromString("00d 00h 21m"),
+                        durationOfTrip: durationOfTripFromStartAndEnd(event.rentalStarted, event.rentalEnded),
                         tripDistance: calculateDistanceTraveled(event.odometerStart, event.odometerEnd),
                         customerId: event.customerId,
                     }
