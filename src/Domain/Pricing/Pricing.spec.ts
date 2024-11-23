@@ -12,6 +12,7 @@ describe('Pricing', () => {
             ['121.6 km', durationOfTripFromString('00d 03h 03m'), Dinero({amount: 4575, currency: "EUR", precision: 2})],
             ['199.1 km', durationOfTripFromString('01d 00h 09m'), Dinero({amount: 36225, currency: "EUR", precision: 2})],
             ['301.4 km', durationOfTripFromString('00d 03h 53m'), Dinero({amount: 6386, currency: "EUR", precision: 2})],
+            ['301.5 km', durationOfTripFromString('00d 03h 53m'), Dinero({amount: 6397, currency: "EUR", precision: 2})],
         ];
 
         it.each(examples)("Short trip (trip distance = %s, trip duration = %s, total price = %s)", (
