@@ -76,19 +76,21 @@ const projector: Projector<
 };
 
 describe('Report of monthly expenditure', () => {
-    it('When no trips were made', async () => {
-        return scenario
-            .when({
-                _named: "Get report of monthly expenditure by customer",
-                customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
-                month: '2020-01'
-            })
-            .then({
-                _named: "Report of monthly expenditure by customer",
-                customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
-                month: '2020-01',
-                trips: []
-            })
-            .assertScenario(runAssertionsOnProjector(projector));
+    describe('Get report of monthly expenditure by customer', () => {
+        it('When no trips were made', async () => {
+            return scenario
+                .when({
+                    _named: "Get report of monthly expenditure by customer",
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                    month: '2020-01'
+                })
+                .then({
+                    _named: "Report of monthly expenditure by customer",
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                    month: '2020-01',
+                    trips: []
+                })
+                .assertScenario(runAssertionsOnProjector(projector));
+        });
     });
 });
