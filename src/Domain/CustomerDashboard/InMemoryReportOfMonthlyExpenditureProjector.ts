@@ -12,6 +12,7 @@ import {
 import {AgreementId} from "../Rental/AgreementId";
 import {RentalEnded} from "../Rental/Ending/RentalEnded";
 import {PriceOfTripWasCalculated} from "../Pricing/PriceOfTripWasCalculated";
+import { CustomerId } from "../CustomerId";
 
 export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};

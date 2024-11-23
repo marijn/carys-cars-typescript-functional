@@ -1,1 +1,1 @@
-type TripId = `trip:${string}`
+export type TripId = `trip:${string}`
