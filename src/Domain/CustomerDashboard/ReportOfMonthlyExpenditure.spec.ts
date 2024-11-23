@@ -67,18 +67,16 @@ type EndedRentalAgreement = {
     endPosition: LatitudeLongitude,
 }
 
-const inMemoryReportOfMonthlyExpenditureProjector: () => Projector<
+type ReportOfMonthlyExpenditureProjector = Projector<
     ReportOfMonthlyExpenditureEvents,
     ReportOfMonthlyExpenditureQueries,
     ReportOfMonthlyExpenditureAnswers
-> = () => {
+>;
+
+const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
     const tripsByCustomer: { [key: CustomerId]: Trip[] } = {};
-    const projector: Projector<
-        ReportOfMonthlyExpenditureEvents,
-        ReportOfMonthlyExpenditureQueries,
-        ReportOfMonthlyExpenditureAnswers
-    > = {
+    const projector: ReportOfMonthlyExpenditureProjector = {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
             return {
                 _named: "Report of monthly expenditure by customer",
