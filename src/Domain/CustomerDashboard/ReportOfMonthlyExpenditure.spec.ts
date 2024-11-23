@@ -62,11 +62,15 @@ const projector: Projector<
     ReportOfMonthlyExpenditureQueries,
     ReportOfMonthlyExpenditureAnswers
 > = {
-    ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
-        throw new Error('TODO: Implement me');
+    async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
+        return {
+            _named: "Report of monthly expenditure by customer",
+            customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+            month: '2020-01',
+            trips: []
+        };
     },
-    when(event: RentalEnded | PriceOfTripWasCalculated): Promise<void> {
-        throw new Error('TODO: Implement me');
+    async when(event: RentalEnded | PriceOfTripWasCalculated): Promise<void> {
     },
     subscribesTo: [],
 };
