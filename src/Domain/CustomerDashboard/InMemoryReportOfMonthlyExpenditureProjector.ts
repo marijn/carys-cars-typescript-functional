@@ -29,6 +29,8 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
             switch (event._named) {
                 case "Rental ended": {
+                    const month = `${event.rentalStarted.year() as unknown as AllYears}-${event.rentalStarted.month().value().toString(10).padStart(2, '0') as unknown as AllMonths}`;
+
                     agreementsByAgreementId[event.agreementId] = {
                         odometerEnd: event.odometerEnd,
                         odometerStart: event.odometerStart,
@@ -36,7 +38,7 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
                         rentalStarted: event.rentalStarted,
                         startPosition: event.startPosition,
                         endPosition: event.endPosition,
-                        month: `${event.rentalStarted.year() as unknown as AllYears}-${event.rentalStarted.month().value().toString(10).padStart(2, '0') as unknown as AllMonths}`
+                        month: month
                     }
 
                     return;
