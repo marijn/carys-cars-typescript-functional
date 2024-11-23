@@ -21,8 +21,10 @@ export const flatFeePricingWith: (
     }
 };
 
+export const launchPricingPerMinute = Dinero({amount: 25, currency: "EUR", precision: 2});
+
 export const launchingPricing: PricingPolicy = flatFeePricingWith(
-    Dinero({amount: 25, currency: "EUR", precision: 2}),
+    launchPricingPerMinute,
     Dinero({amount: 11, currency: "EUR", precision: 2}),
     "250.0 km"
 );
