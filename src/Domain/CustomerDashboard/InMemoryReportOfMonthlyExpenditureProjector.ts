@@ -90,14 +90,10 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
             switch (event._named) {
                 case "Rental ended": {
-                    projectRentalEnded(event);
-
-                    return;
+                    return projectRentalEnded(event);
                 }
                 case "Price of trip was calculated": {
-                    projectPriceOfTripWasCalculated(event);
-
-                    return;
+                    return projectPriceOfTripWasCalculated(event);
                 }
             }
         },
