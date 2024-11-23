@@ -3,12 +3,9 @@ import {
     calculateDistanceTraveled,
     DistanceTraveled,
     distanceTraveledFromString,
-    distanceTraveledToString
+    distanceTraveledToString,
+    lowestDistanceTraveled
 } from "./DistanceTraveled";
-
-const lowestDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (a, b) => {
-    return distanceTraveledFromString(`${Math.min(parseFloat(a), parseFloat(b)).toFixed(1)} km`);
-};
 
 describe('Distance traveled', () => {
     const examples: string[] = [
