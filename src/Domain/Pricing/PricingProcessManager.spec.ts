@@ -16,6 +16,25 @@ type PricingProcessManager = ProcessManager<
     PricingProcessManagerSideEffects
 >;
 
+const buildPricingProcessManager: () => PricingProcessManager = () => {
+    return {
+        async processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
+            return [
+                {
+                    _named: "Please calculate price of trip",
+                    tripId: agreementIdToTripId(event.agreementId),
+                    vehicle: event.vehicle,
+                    agreementId: event.agreementId,
+                    durationOfTrip: durationOfTripFromStartAndEnd(event.rentalStarted, event.rentalEnded),
+                    tripDistance: calculateDistanceTraveled(event.odometerStart, event.odometerEnd),
+                    customerId: event.customerId,
+                }
+            ]
+        },
+        subscribesTo: [],
+    }
+};
+
 describe('Pricing process manager', () => {
     const scenario = new ProcessManagerScenario<
         PricingProcessManagerTriggers,
@@ -23,22 +42,7 @@ describe('Pricing process manager', () => {
     >();
 
     it('Rental ended => Please calculate price of trip', async (): Promise<void> => {
-        const subjectUnderTest: PricingProcessManager = {
-            async processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
-                return [
-                    {
-                        _named: "Please calculate price of trip",
-                        tripId: agreementIdToTripId(event.agreementId),
-                        vehicle: event.vehicle,
-                        agreementId: event.agreementId,
-                        durationOfTrip: durationOfTripFromStartAndEnd(event.rentalStarted, event.rentalEnded),
-                        tripDistance: calculateDistanceTraveled(event.odometerStart, event.odometerEnd),
-                        customerId: event.customerId,
-                    }
-                ]
-            },
-            subscribesTo: [],
-        };
+        const subjectUnderTest: PricingProcessManager = buildPricingProcessManager();
 
         return scenario
             .when({
