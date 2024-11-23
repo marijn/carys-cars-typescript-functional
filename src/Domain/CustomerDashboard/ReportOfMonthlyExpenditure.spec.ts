@@ -76,7 +76,8 @@ type ReportOfMonthlyExpenditureProjector = Projector<
 const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
     const tripsByCustomer: { [key: CustomerId]: Trip[] } = {};
-    const projector: ReportOfMonthlyExpenditureProjector = {
+
+    return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
             return {
                 _named: "Report of monthly expenditure by customer",
@@ -126,8 +127,6 @@ const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpendit
         },
         subscribesTo: [],
     };
-
-    return projector;
 }
 
 const reportOfMonthlyExpenditureProjector = inMemoryReportOfMonthlyExpenditureProjector();
