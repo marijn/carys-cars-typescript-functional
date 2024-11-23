@@ -17,13 +17,15 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
 
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
+            const trips = query.customerId in tripsByCustomer
+                ? (query.month in tripsByCustomer[query.customerId] ? tripsByCustomer[query.customerId][query.month] : [])
+                : [];
+
             return {
                 _named: "Report of monthly expenditure by customer",
                 customerId: query.customerId,
                 month: query.month,
-                trips: query.customerId in tripsByCustomer
-                    ? (query.month in tripsByCustomer[query.customerId] ? tripsByCustomer[query.customerId][query.month] : [])
-                    : []
+                trips: trips
             };
         },
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
