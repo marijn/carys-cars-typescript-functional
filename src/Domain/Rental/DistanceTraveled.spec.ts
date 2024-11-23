@@ -7,7 +7,7 @@ import {
 } from "./DistanceTraveled";
 
 const lowestDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (a, b) => {
-    throw new Error('TODO: Implement me');
+    return distanceTraveledFromString(`${Math.min(parseFloat(a), parseFloat(b)).toFixed(1)} km`);
 };
 
 describe('Distance traveled', () => {
