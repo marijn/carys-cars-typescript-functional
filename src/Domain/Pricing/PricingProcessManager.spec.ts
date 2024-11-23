@@ -13,10 +13,7 @@ type PricingProcessManagerTriggers = | RentalEnded;
 type PricingProcessManagerSideEffects = | PleaseCalculatePriceOfTrip;
 
 describe('Pricing process manager', () => {
-    const scenario: ProcessManagerScenario<
-        PricingProcessManagerTriggers,
-        PricingProcessManagerSideEffects
-    > = new ProcessManagerScenario<
+    const scenario = new ProcessManagerScenario<
         PricingProcessManagerTriggers,
         PricingProcessManagerSideEffects
     >();
