@@ -27,5 +27,7 @@ export const calculateDistanceTraveled: (a: DistanceTraveled, b: DistanceTravele
 };
 
 export const lowestDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (a, b) => {
-    return distanceTraveledFromString(`${Math.min(parseFloat(a), parseFloat(b)).toFixed(1)} km`);
+    const lowest = Math.min(parseFloat(a), parseFloat(b));
+
+    return distanceTraveledFromString(`${lowest.toFixed(1)} km`);
 };
