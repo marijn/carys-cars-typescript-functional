@@ -32,7 +32,11 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
 
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
-            return askGetReportOfMonthlyExpenditureByCustomer(query);
+            switch (query._named) {
+                case "Get report of monthly expenditure by customer": {
+                    return askGetReportOfMonthlyExpenditureByCustomer(query);
+                }
+            }
         },
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
             switch (event._named) {
