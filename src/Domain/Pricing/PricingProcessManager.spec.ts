@@ -1,39 +1,14 @@
 import {describe, it} from "@jest/globals";
 import {ProcessManagerScenario} from "../../Infrastructure/ProcessManager/Testing/ProcessManagerScenario";
-import {PleaseCalculatePriceOfTrip} from "./PleaseCalculatePriceOfTrip";
-import {RentalEnded} from "../Rental/Ending/RentalEnded";
 import {runAssertionOnProcessManager} from "../../Infrastructure/ProcessManager/Testing/runAssertionOnProcessManager";
-import {ProcessManager} from "../../Infrastructure/ProcessManager/ProcessManager";
-import {durationOfTripFromStartAndEnd, durationOfTripFromString} from "./DurationOfTrip";
+import {durationOfTripFromString} from "./DurationOfTrip";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
-import {calculateDistanceTraveled} from "../Rental/DistanceTraveled";
-import {agreementIdToTripId} from "../Rental/AgreementId";
-
-type PricingProcessManagerTriggers = | RentalEnded;
-type PricingProcessManagerSideEffects = | PleaseCalculatePriceOfTrip;
-type PricingProcessManager = ProcessManager<
-    PricingProcessManagerTriggers,
-    PricingProcessManagerSideEffects
->;
-
-const buildPricingProcessManager: () => PricingProcessManager = () => {
-    return {
-        async processEvent(event: PricingProcessManagerTriggers): Promise<PricingProcessManagerSideEffects[]> {
-            return [
-                {
-                    _named: "Please calculate price of trip",
-                    tripId: agreementIdToTripId(event.agreementId),
-                    vehicle: event.vehicle,
-                    agreementId: event.agreementId,
-                    durationOfTrip: durationOfTripFromStartAndEnd(event.rentalStarted, event.rentalEnded),
-                    tripDistance: calculateDistanceTraveled(event.odometerStart, event.odometerEnd),
-                    customerId: event.customerId,
-                }
-            ]
-        },
-        subscribesTo: [],
-    }
-};
+import {
+    buildPricingProcessManager,
+    PricingProcessManager,
+    PricingProcessManagerSideEffects,
+    PricingProcessManagerTriggers
+} from "./PricingProcessManager";
 
 describe('Pricing process manager', () => {
     const scenario = new ProcessManagerScenario<
