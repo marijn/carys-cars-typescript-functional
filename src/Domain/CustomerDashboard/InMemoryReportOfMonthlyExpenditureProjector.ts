@@ -31,7 +31,6 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
                 case "Rental ended": {
                     const year = event.rentalStarted.year() as unknown as AllYears;
                     const monthWithLeadingZero = event.rentalStarted.month().value().toString(10).padStart(2, '0') as unknown as AllMonths;
-                    const month: ReportingMonth = `${year}-${monthWithLeadingZero}`;
 
                     agreementsByAgreementId[event.agreementId] = {
                         odometerEnd: event.odometerEnd,
@@ -40,7 +39,7 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
                         rentalStarted: event.rentalStarted,
                         startPosition: event.startPosition,
                         endPosition: event.endPosition,
-                        month: month
+                        month: `${year}-${monthWithLeadingZero}`
                     }
 
                     return;
