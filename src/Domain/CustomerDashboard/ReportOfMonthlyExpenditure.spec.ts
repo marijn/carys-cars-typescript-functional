@@ -65,6 +65,7 @@ type EndedRentalAgreement = {
     rentalStarted: ZonedDateTime,
     startPosition: LatitudeLongitude,
     endPosition: LatitudeLongitude,
+    month: ReportingMonth
 }
 
 type ReportOfMonthlyExpenditureProjector = Projector<
@@ -75,7 +76,7 @@ type ReportOfMonthlyExpenditureProjector = Projector<
 
 const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
-    const tripsByCustomer: { [key: CustomerId]: Trip[] } = {};
+    const tripsByCustomer: { [key: CustomerId]: Partial<Record<ReportingMonth, Trip[]>> } = {};
 
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
@@ -83,7 +84,9 @@ const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpendit
                 _named: "Report of monthly expenditure by customer",
                 customerId: query.customerId,
                 month: query.month,
-                trips: query.customerId in tripsByCustomer ? tripsByCustomer[query.customerId] : []
+                trips: query.customerId in tripsByCustomer
+                    ? (query.month in tripsByCustomer[query.customerId] ? tripsByCustomer[query.customerId][query.month]: [])
+                    : []
             };
         },
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
@@ -96,17 +99,23 @@ const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpendit
                         rentalStarted: event.rentalStarted,
                         startPosition: event.startPosition,
                         endPosition: event.endPosition,
+                        month: `${event.rentalStarted.year() as unknown as AllYears}-${event.rentalStarted.month().value().toString(10).padStart(2, '0') as unknown as AllMonths}`
                     }
 
                     return;
                 }
                 case "Price of trip was calculated": {
-                    if (!tripsByCustomer[event.customerId]) {
-                        tripsByCustomer[event.customerId] = [];
+                    const agreement = agreementsByAgreementId[event.agreementId];
+
+                    if ( ! (event.customerId in tripsByCustomer)) {
+                        tripsByCustomer[event.customerId] = {};
                     }
 
-                    const agreement = agreementsByAgreementId[event.agreementId];
-                    tripsByCustomer[event.customerId].push({
+                    if ( ! (agreement.month in tripsByCustomer[event.customerId])) {
+                        tripsByCustomer[event.customerId][agreement.month] = [];
+                    }
+
+                    tripsByCustomer[event.customerId][agreement.month].push({
                         agreementId: event.agreementId,
                         durationOfTrip: event.durationOfTrip,
                         odometerEnd: agreement.odometerEnd,
