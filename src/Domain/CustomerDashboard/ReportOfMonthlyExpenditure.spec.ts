@@ -58,6 +58,17 @@ const scenario = new QueryHandlingScenario<
     ReportOfMonthlyExpenditureAnswers
 >();
 
+type EndedRentalAgreement = {
+    odometerEnd: DistanceTraveled,
+    odometerStart: DistanceTraveled,
+    rentalEnded: ZonedDateTime,
+    rentalStarted: ZonedDateTime,
+    startPosition: LatitudeLongitude,
+    endPosition: LatitudeLongitude,
+}
+
+const agreementsByAgreementId: {[key: AgreementId]: EndedRentalAgreement} = {};
+const tripsByCustomer: {[key: CustomerId]: Trip[]} = {};
 const projector: Projector<
     ReportOfMonthlyExpenditureEvents,
     ReportOfMonthlyExpenditureQueries,
@@ -66,12 +77,49 @@ const projector: Projector<
     async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
         return {
             _named: "Report of monthly expenditure by customer",
-            customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
-            month: '2020-01',
-            trips: []
+            customerId: query.customerId,
+            month: query.month,
+            trips: query.customerId in tripsByCustomer ? tripsByCustomer[query.customerId] : []
         };
     },
-    async when(event: RentalEnded | PriceOfTripWasCalculated): Promise<void> {
+    async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
+        switch (event._named) {
+            case "Rental ended": {
+                agreementsByAgreementId[event.agreementId] = {
+                    odometerEnd: event.odometerEnd,
+                    odometerStart: event.odometerStart,
+                    rentalEnded: event.rentalEnded,
+                    rentalStarted: event.rentalStarted,
+                    startPosition: event.startPosition,
+                    endPosition: event.endPosition,
+                }
+
+                return;
+            }
+            case "Price of trip was calculated": {
+                if ( ! tripsByCustomer[event.customerId]) {
+                    tripsByCustomer[event.customerId] = [];
+                }
+
+                const agreement = agreementsByAgreementId[event.agreementId];
+                tripsByCustomer[event.customerId].push({
+                    agreementId: event.agreementId,
+                    durationOfTrip: event.durationOfTrip,
+                    odometerEnd: agreement.odometerEnd,
+                    odometerStart: agreement.odometerStart,
+                    rentalEnded: agreement.rentalEnded,
+                    rentalStarted: agreement.rentalStarted,
+                    startPosition: agreement.startPosition,
+                    endPosition: agreement.endPosition,
+                    totalPrice: event.totalPrice,
+                    tripDistance: event.tripDistance,
+                    tripId: event.tripId,
+                    vehicle: event.vehicle
+                });
+
+                return;
+            }
+        }
     },
     subscribesTo: [],
 };
