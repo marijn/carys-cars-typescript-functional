@@ -33,7 +33,7 @@ export const durationOfTripFromStartAndEnd: (start: ZonedDateTime, end: ZonedDat
     }
 };
 
-export const durationOfTripToString = (input: DurationOfTrip): string => {
+export const durationOfTripToString: (input: DurationOfTrip) => string = (input) => {
     const daysWithLeadingZeroes = input.days.toString(10).padStart(2, "0");
     const hoursWithLeadingZeroes = input.hours.toString(10).padStart(2, "0");
     const minutesWithLeadingZeroes = input.minutes.toString(10).padStart(2, "0");
