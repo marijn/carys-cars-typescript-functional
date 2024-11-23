@@ -3,9 +3,9 @@ import {QueryHandlingScenario} from "../../Infrastructure/Projector/Testing/Quer
 import Dinero from "dinero.js";
 import {AgreementId} from "../Rental/AgreementId";
 import {LicensePlate} from "../LicensePlate";
-import {DurationOfTrip} from "../Pricing/DurationOfTrip";
+import {DurationOfTrip, durationOfTripFromString} from "../Pricing/DurationOfTrip";
 import {DistanceTraveled} from "../Rental/DistanceTraveled";
-import {ZonedDateTime} from "js-joda";
+import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
 import {LatitudeLongitude} from "../Rental/LatitudeLongitude";
 import {runAssertionsOnProjector} from "../../Infrastructure/Projector/Testing/runAssertionsOnProjector";
 import {Projector} from "../../Infrastructure/Projector/Projector";
@@ -13,7 +13,7 @@ import {RentalEnded} from "../Rental/Ending/RentalEnded";
 import {PriceOfTripWasCalculated} from "../Pricing/PriceOfTripWasCalculated";
 
 type AllMonths = | '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
-type AllYears = `20${ '2' | '3' | '4'}${ '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'}`
+type AllYears = `20${'2' | '3' | '4'}${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'}`
 type ReportingMonth<
     ReportingYear extends AllYears = AllYears,
     ReportingMonth extends AllMonths = AllMonths
@@ -25,24 +25,25 @@ type GetReportOfMonthlyExpenditureByCustomer = {
     month: ReportingMonth,
 };
 
+type Trip = {
+    tripId: TripId,
+    agreementId: AgreementId,
+    vehicle: LicensePlate,
+    durationOfTrip: DurationOfTrip,
+    tripDistance: DistanceTraveled,
+    odometerStart: DistanceTraveled,
+    odometerEnd: DistanceTraveled,
+    rentalStarted: ZonedDateTime,
+    rentalEnded: ZonedDateTime,
+    startPosition: LatitudeLongitude,
+    endPosition: LatitudeLongitude,
+    totalPrice: Dinero.Dinero
+};
 type ReportOfMonthlyExpenditureByCustomer = {
     _named: 'Report of monthly expenditure by customer',
     customerId: CustomerId,
     month: ReportingMonth,
-    trips: {
-        tripId: TripId,
-        agreementId: AgreementId,
-        vehicle: LicensePlate,
-        durationOfTrip: DurationOfTrip,
-        tripDistance: DistanceTraveled,
-        odometerStart: DistanceTraveled,
-        odometerEnd: DistanceTraveled,
-        rentalStarted: ZonedDateTime,
-        rentalEnded: ZonedDateTime,
-        startPosition: LatitudeLongitude,
-        endPosition: LatitudeLongitude,
-        totalPrice: Dinero.Dinero
-    }[]
+    trips: Trip[]
 };
 
 type ReportOfMonthlyExpenditureEvents =
@@ -89,6 +90,72 @@ describe('Report of monthly expenditure', () => {
                     customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
                     month: '2020-01',
                     trips: []
+                })
+                .assertScenario(runAssertionsOnProjector(projector));
+        });
+
+        it('Single trip', async () => {
+            return scenario
+                .given({
+                    _named: "Rental ended",
+                    agreementId: "agreement:11111111-1111-1111-1111-111111111111",
+                    vehicle: "NL:GGS-10-N",
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                    odometerStart: '3499.1 km',
+                    odometerEnd: '3518.3 km',
+                    rentalStarted: ZonedDateTime.of(
+                        LocalDateTime.parse("2024-09-12T10:22"),
+                        ZoneId.of("UTC+2")
+                    ),
+                    rentalEnded: ZonedDateTime.of(
+                        LocalDateTime.parse("2024-09-12T10:39"),
+                        ZoneId.of("UTC+2")
+                    ),
+                    startPosition: '52.35633, 4.83712',
+                    endPosition: '52.36922, 4.96470',
+                },
+                {
+                    _named: "Price of trip was calculated",
+                    tripId: "trip:11111111-1111-1111-1111-111111111111",
+                    vehicle: "NL:GGS-10-N",
+                    agreementId: "agreement:11111111-1111-1111-1111-111111111111",
+                    durationOfTrip: durationOfTripFromString("00d 00h 17m"),
+                    tripDistance: "19.2 km",
+                    pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                    totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                })
+                .when({
+                    _named: "Get report of monthly expenditure by customer",
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                    month: '2024-09',
+                })
+                .then({
+                    _named: "Report of monthly expenditure by customer",
+                    customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                    month: '2024-09',
+                    trips: [
+                        {
+                            tripId: "trip:11111111-1111-1111-1111-111111111111",
+                            agreementId: "agreement:11111111-1111-1111-1111-111111111111",
+                            vehicle: "NL:GGS-10-N",
+                            durationOfTrip: durationOfTripFromString("00d 00h 17m"),
+                            tripDistance: "19.2 km",
+                            odometerStart: '3499.1 km',
+                            odometerEnd: '3518.3 km',
+                            rentalStarted: ZonedDateTime.of(
+                                LocalDateTime.parse("2024-09-12T10:22"),
+                                ZoneId.of("UTC+2")
+                            ),
+                            rentalEnded: ZonedDateTime.of(
+                                LocalDateTime.parse("2024-09-12T10:39"),
+                                ZoneId.of("UTC+2")
+                            ),
+                            startPosition: '52.35633, 4.83712',
+                            endPosition: '52.36922, 4.96470',
+                            totalPrice: Dinero({amount: 425, currency: "EUR", precision: 2}),
+                        },
+                    ]
                 })
                 .assertScenario(runAssertionsOnProjector(projector));
         });
