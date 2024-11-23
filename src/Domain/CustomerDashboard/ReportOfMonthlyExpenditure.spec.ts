@@ -2,77 +2,26 @@ import {describe, it} from "@jest/globals";
 import {QueryHandlingScenario} from "../../Infrastructure/Projector/Testing/QueryHandlingScenario";
 import Dinero from "dinero.js";
 import {AgreementId} from "../Rental/AgreementId";
-import {LicensePlate} from "../LicensePlate";
-import {DurationOfTrip, durationOfTripFromString} from "../Pricing/DurationOfTrip";
-import {DistanceTraveled} from "../Rental/DistanceTraveled";
+import {durationOfTripFromString} from "../Pricing/DurationOfTrip";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
-import {LatitudeLongitude} from "../Rental/LatitudeLongitude";
 import {runAssertionsOnProjector} from "../../Infrastructure/Projector/Testing/runAssertionsOnProjector";
-import {Projector} from "../../Infrastructure/Projector/Projector";
-import {RentalEnded} from "../Rental/Ending/RentalEnded";
-import {PriceOfTripWasCalculated} from "../Pricing/PriceOfTripWasCalculated";
-
-type AllMonths = | '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
-type AllYears = `20${'2' | '3' | '4'}${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'}`
-type ReportingMonth<
-    ReportingYear extends AllYears = AllYears,
-    ReportingMonth extends AllMonths = AllMonths
-> = `${ReportingYear}-${ReportingMonth}`
-
-type GetReportOfMonthlyExpenditureByCustomer = {
-    _named: 'Get report of monthly expenditure by customer',
-    customerId: CustomerId,
-    month: ReportingMonth,
-};
-
-type Trip = {
-    tripId: TripId,
-    agreementId: AgreementId,
-    vehicle: LicensePlate,
-    durationOfTrip: DurationOfTrip,
-    tripDistance: DistanceTraveled,
-    odometerStart: DistanceTraveled,
-    odometerEnd: DistanceTraveled,
-    rentalStarted: ZonedDateTime,
-    rentalEnded: ZonedDateTime,
-    startPosition: LatitudeLongitude,
-    endPosition: LatitudeLongitude,
-    totalPrice: Dinero.Dinero
-};
-type ReportOfMonthlyExpenditureByCustomer = {
-    _named: 'Report of monthly expenditure by customer',
-    customerId: CustomerId,
-    month: ReportingMonth,
-    trips: Trip[]
-};
-
-type ReportOfMonthlyExpenditureEvents =
-    | RentalEnded
-    | PriceOfTripWasCalculated
-type ReportOfMonthlyExpenditureQueries = | GetReportOfMonthlyExpenditureByCustomer
-type ReportOfMonthlyExpenditureAnswers = | ReportOfMonthlyExpenditureByCustomer
+import {
+    AllMonths,
+    AllYears,
+    EndedRentalAgreement,
+    ReportingMonth,
+    ReportOfMonthlyExpenditureAnswers,
+    ReportOfMonthlyExpenditureEvents,
+    ReportOfMonthlyExpenditureProjector,
+    ReportOfMonthlyExpenditureQueries,
+    Trip
+} from "./ReportOfMonthlyExpenditure";
 
 const scenario = new QueryHandlingScenario<
     ReportOfMonthlyExpenditureEvents,
     ReportOfMonthlyExpenditureQueries,
     ReportOfMonthlyExpenditureAnswers
 >();
-
-type EndedRentalAgreement = {
-    odometerEnd: DistanceTraveled,
-    odometerStart: DistanceTraveled,
-    rentalEnded: ZonedDateTime,
-    rentalStarted: ZonedDateTime,
-    startPosition: LatitudeLongitude,
-    endPosition: LatitudeLongitude,
-    month: ReportingMonth
-}
-
-type ReportOfMonthlyExpenditureProjector = Projector<
-    ReportOfMonthlyExpenditureEvents,
-    ReportOfMonthlyExpenditureQueries,
-    ReportOfMonthlyExpenditureAnswers
->;
 
 const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
