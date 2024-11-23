@@ -6,7 +6,7 @@ import {durationOfTripFromString} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
 import {Decider} from "../../Infrastructure/Decider/Decider";
-import {launchingPricing, PricingPolicy} from "./LaunchingPricing";
+import {launchingPricing, launchPricingPerMinute, PricingPolicy} from "./LaunchingPricing";
 
 type TripIsNotPriced = Readonly<{
     _named: "TripIsNotPriced",
@@ -41,7 +41,7 @@ const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingComm
                             agreementId: command.agreementId,
                             durationOfTrip: command.durationOfTrip,
                             tripDistance: command.tripDistance,
-                            pricePerMinute: Dinero({amount: 25, currency: "EUR", precision: 2}),
+                            pricePerMinute: launchPricingPerMinute,
                             totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
                             customerId: command.customerId,
                         }
