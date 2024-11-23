@@ -10,6 +10,7 @@ import {
     Trip
 } from "./ReportOfMonthlyExpenditure";
 import {AgreementId} from "../Rental/AgreementId";
+import {RentalEnded} from "../Rental/Ending/RentalEnded";
 
 export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
@@ -30,6 +31,26 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
         };
     };
 
+    const projectRentalEnded: (event: RentalEnded) => void = (event) => {
+        const year = event.rentalStarted.year() as unknown as AllYears;
+        const monthWithLeadingZero = event
+            .rentalStarted
+            .month()
+            .value()
+            .toString(10)
+            .padStart(2, '0') as unknown as AllMonths;
+
+        agreementsByAgreementId[event.agreementId] = {
+            odometerEnd: event.odometerEnd,
+            odometerStart: event.odometerStart,
+            rentalEnded: event.rentalEnded,
+            rentalStarted: event.rentalStarted,
+            startPosition: event.startPosition,
+            endPosition: event.endPosition,
+            month: `${year}-${monthWithLeadingZero}`
+        }
+    };
+
     return {
         async ask(query: ReportOfMonthlyExpenditureQueries): Promise<ReportOfMonthlyExpenditureAnswers> {
             switch (query._named) {
@@ -41,23 +62,7 @@ export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyE
         async when(event: ReportOfMonthlyExpenditureEvents): Promise<void> {
             switch (event._named) {
                 case "Rental ended": {
-                    const year = event.rentalStarted.year() as unknown as AllYears;
-                    const monthWithLeadingZero = event
-                        .rentalStarted
-                        .month()
-                        .value()
-                        .toString(10)
-                        .padStart(2, '0') as unknown as AllMonths;
-
-                    agreementsByAgreementId[event.agreementId] = {
-                        odometerEnd: event.odometerEnd,
-                        odometerStart: event.odometerStart,
-                        rentalEnded: event.rentalEnded,
-                        rentalStarted: event.rentalStarted,
-                        startPosition: event.startPosition,
-                        endPosition: event.endPosition,
-                        month: `${year}-${monthWithLeadingZero}`
-                    }
+                    projectRentalEnded(event);
 
                     return;
                 }
