@@ -12,13 +12,13 @@ import {
 } from "./ReportOfMonthlyExpenditure";
 import {inMemoryReportOfMonthlyExpenditureProjector} from "./InMemoryReportOfMonthlyExpenditureProjector";
 
-const scenario = new QueryHandlingScenario<
-    ReportOfMonthlyExpenditureEvents,
-    ReportOfMonthlyExpenditureQueries,
-    ReportOfMonthlyExpenditureAnswers
->();
-
 const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOfMonthlyExpenditureProjector) => void = (subjectUnderTest) => {
+    const scenario = new QueryHandlingScenario<
+        ReportOfMonthlyExpenditureEvents,
+        ReportOfMonthlyExpenditureQueries,
+        ReportOfMonthlyExpenditureAnswers
+    >();
+
     describe('Get report of monthly expenditure by customer', () => {
         it('When no trips were made', async () => {
             return scenario
