@@ -24,10 +24,13 @@ export const launchingPricing: PricingPolicy = (
     tripDistance,
     tripDuration
 ) => {
-    const pricePerAdditionalKilometer = Dinero({amount: 11, currency: "EUR", precision: 2});
     const includedDistance: DistanceTraveled = "250.0 km";
 
-    const flatFeePricing: PricingPolicy = flatFeePricingWith(Dinero({amount: 25, currency: "EUR", precision: 2}), pricePerAdditionalKilometer, includedDistance);
+    const flatFeePricing: PricingPolicy = flatFeePricingWith(Dinero({amount: 25, currency: "EUR", precision: 2}), Dinero({
+        amount: 11,
+        currency: "EUR",
+        precision: 2
+    }), includedDistance);
 
     return flatFeePricing(tripDistance, tripDuration);
 };
