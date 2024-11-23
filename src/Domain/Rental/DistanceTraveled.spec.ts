@@ -6,6 +6,10 @@ import {
     distanceTraveledToString
 } from "./DistanceTraveled";
 
+const lowestDistanceTraveled: (a: DistanceTraveled, b: DistanceTraveled) => DistanceTraveled = (a, b) => {
+    throw new Error('TODO: Implement me');
+};
+
 describe('Distance traveled', () => {
     const examples: string[] = [
         '1739.7 km',
@@ -30,6 +34,16 @@ describe('Distance traveled', () => {
         const actual: DistanceTraveled = calculateDistanceTraveled(a, b);
 
         const expected: DistanceTraveled = distanceTraveled;
+        expect(actual).toEqual(expected);
+    });
+
+    it("picks lowest of two", () => {
+        const lowest: DistanceTraveled = '0.0 km';
+        const highest: DistanceTraveled = '0.1 km';
+
+        const actual: DistanceTraveled = lowestDistanceTraveled(lowest, highest);
+
+        const expected: DistanceTraveled = lowest;
         expect(actual).toEqual(expected);
     });
 });
