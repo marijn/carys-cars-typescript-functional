@@ -23,27 +23,34 @@ type PricingStates =
 export const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingCommands, PricingStates, PricingEvents, TripId> = (
     pricingPolicy
 ) => {
+    const decideToPleaseCalculatePriceOfTrip: (
+        state: PricingStates,
+        command: PleaseCalculatePriceOfTrip
+    ) => Promise<PricingEvents[]> = (state, command) => {
+        if ('TripIsPriced' === state._named) {
+            return Promise.resolve([]);
+        }
+
+        return Promise.resolve([
+            {
+                _named: "Price of trip was calculated",
+                tripId: command.tripId,
+                vehicle: command.vehicle,
+                agreementId: command.agreementId,
+                durationOfTrip: command.durationOfTrip,
+                tripDistance: command.tripDistance,
+                pricePerMinute: launchPricingPerMinute,
+                totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
+                customerId: command.customerId,
+            }
+        ]);
+    };
+
     return {
         decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
             switch (command._named) {
                 case "Please calculate price of trip": {
-                    if ('TripIsPriced' === state._named) {
-                        return Promise.resolve([]);
-                    }
-
-                    return Promise.resolve([
-                        {
-                            _named: "Price of trip was calculated",
-                            tripId: command.tripId,
-                            vehicle: command.vehicle,
-                            agreementId: command.agreementId,
-                            durationOfTrip: command.durationOfTrip,
-                            tripDistance: command.tripDistance,
-                            pricePerMinute: launchPricingPerMinute,
-                            totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
-                            customerId: command.customerId,
-                        }
-                    ]);
+                    return decideToPleaseCalculatePriceOfTrip(state, command);
                 }
             }
         },
