@@ -9,7 +9,7 @@ import {buildPricingDecider, PricingCommands, PricingEvents} from "./PricingDeci
 describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
 
-    it('Happy path :-)', async () => {
+    it('Trip is NOT priced', async () => {
         const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
