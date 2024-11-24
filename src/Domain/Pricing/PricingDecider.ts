@@ -23,7 +23,7 @@ type PricingStates =
 export const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingCommands, PricingStates, PricingEvents, TripId> = (
     pricingPolicy
 ) => {
-    const decideToPleaseCalculatePriceOfTrip: (
+    const pleaseCalculatePriceOfTrip: (
         state: PricingStates,
         command: PleaseCalculatePriceOfTrip
     ) => Promise<PricingEvents[]> = (state, command) => {
@@ -50,7 +50,7 @@ export const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<Pric
         decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
             switch (command._named) {
                 case "Please calculate price of trip": {
-                    return decideToPleaseCalculatePriceOfTrip(state, command);
+                    return pleaseCalculatePriceOfTrip(state, command);
                 }
             }
         },
