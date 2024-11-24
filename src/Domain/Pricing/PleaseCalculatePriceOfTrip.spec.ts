@@ -36,7 +36,7 @@ describe('Please calculate price of trip', () => {
             .assertScenario(runAssertionOnDecider(pricingDecider));
     });
 
-    it('is ignored when nothing changed', async () => {
+    it('Trip is priced', async () => {
         const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
