@@ -3,6 +3,7 @@ import {DistanceTraveled} from "../DistanceTraveled";
 import {ZonedDateTime} from "js-joda";
 import {LatitudeLongitude} from "../LatitudeLongitude";
 import {LicensePlate} from "../../LicensePlate";
+import {CustomerId} from "../../CustomerId";
 
 export type RentalEnded = Readonly<{
     _named: "Rental ended",
