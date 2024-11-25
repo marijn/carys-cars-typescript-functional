@@ -12,7 +12,7 @@ import {
 } from "./ReportOfMonthlyExpenditure";
 import {inMemoryReportOfMonthlyExpenditureProjector} from "./InMemoryReportOfMonthlyExpenditureProjector";
 import {buildRentalEnded} from "../Rental/Ending/TestingMessages";
-import {buildPriceOfTripWasCalculated} from "../Pricing/TestingMessages";
+import {aPriceOfTripWasCalculated} from "../Pricing/TestingMessages";
 
 const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOfMonthlyExpenditureProjector) => void = (subjectUnderTest) => {
     const scenario = new QueryHandlingScenario<
@@ -59,7 +59,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith('endPosition', '52.36922, 4.96470')
                         .toObject(),
 
-                    buildPriceOfTripWasCalculated()
+                    aPriceOfTripWasCalculated()
                         .with('tripId', 'trip:11111111-1111-1111-1111-111111111111')
                         .andWith('vehicle', "NL:GGS-10-N")
                         .andWith('agreementId', "agreement:11111111-1111-1111-1111-111111111111")
@@ -126,7 +126,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith('endPosition', '52.36922, 4.96470')
                         .toObject(),
 
-                    buildPriceOfTripWasCalculated()
+                    aPriceOfTripWasCalculated()
                         .with('tripId', 'trip:11111111-1111-1111-1111-111111111111')
                         .andWith('vehicle', "NL:GGS-10-N")
                         .andWith('agreementId', "agreement:11111111-1111-1111-1111-111111111111")
@@ -155,7 +155,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith('endPosition', '52.33917, 4.91529')
                         .toObject(),
 
-                    buildPriceOfTripWasCalculated()
+                    aPriceOfTripWasCalculated()
                         .with('tripId', 'trip:22222222-2222-2222-2222-222222222222')
                         .andWith('vehicle', "NL:GGD-15-D")
                         .andWith('agreementId', "agreement:22222222-2222-2222-2222-222222222222")
@@ -184,7 +184,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith('endPosition', '52.34900, 4.87596')
                         .toObject(),
 
-                    buildPriceOfTripWasCalculated()
+                    aPriceOfTripWasCalculated()
                         .with('tripId', 'trip:33333333-3333-3333-3333-333333333333')
                         .andWith('vehicle', "NL:GGR-50-D")
                         .andWith('agreementId', "agreement:33333333-3333-3333-3333-333333333333")
