@@ -1,3 +1,5 @@
+import {TripId} from "../Pricing/TripId";
+
 export type AgreementId = `agreement:${string}`
 
 export class SorryUnsupportedAgreementId extends Error {
