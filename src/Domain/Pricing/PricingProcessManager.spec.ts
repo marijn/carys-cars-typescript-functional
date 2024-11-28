@@ -9,6 +9,7 @@ import {
     PricingProcessManagerSideEffects,
     PricingProcessManagerTriggers
 } from "./PricingProcessManager";
+import {aRentalEnded} from "../Rental/Ending/TestingMessages";
 
 describe('Pricing process manager', () => {
     const scenario = new ProcessManagerScenario<
@@ -20,24 +21,25 @@ describe('Pricing process manager', () => {
         const subjectUnderTest: PricingProcessManager = buildPricingProcessManager();
 
         return scenario
-            .when({
-                _named: "Rental ended",
-                agreementId: "agreement:11111111-1111-1111-1111-111111111111",
-                customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
-                startPosition: '52.34773, 4.87809',
-                endPosition: '52.34900, 4.87596',
-                odometerStart: "2024.6 km",
-                odometerEnd: "2033.8 km",
-                rentalStarted: ZonedDateTime.of(
-                    LocalDateTime.parse("2024-08-05T15:08"),
-                    ZoneId.of("UTC+2")
-                ),
-                rentalEnded: ZonedDateTime.of(
-                    LocalDateTime.parse("2024-08-05T15:29"),
-                    ZoneId.of("UTC+2")
-                ),
-                vehicle: "NL:GGS-25-N",
-            })
+            .when(
+                aRentalEnded()
+                    .with('agreementId', 'agreement:11111111-1111-1111-1111-111111111111')
+                    .andWith('customerId', 'customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA')
+                    .andWith('startPosition', '52.34773, 4.87809')
+                    .andWith('endPosition', '52.34900, 4.87596')
+                    .andWith('odometerStart', '2024.6 km')
+                    .andWith('odometerEnd', '2033.8 km')
+                    .andWith('rentalStarted', ZonedDateTime.of(
+                        LocalDateTime.parse("2024-08-05T15:08"),
+                        ZoneId.of("UTC+2")
+                    ))
+                    .andWith('rentalEnded', ZonedDateTime.of(
+                        LocalDateTime.parse("2024-08-05T15:29"),
+                        ZoneId.of("UTC+2")
+                    ))
+                    .andWith('vehicle', 'NL:GGS-25-N')
+                    .toObject()
+            )
             .then({
                 _named: "Please calculate price of trip",
                 tripId: "trip:11111111-1111-1111-1111-111111111111",
