@@ -11,7 +11,7 @@ import {
     ReportOfMonthlyExpenditureQueries
 } from "./ReportOfMonthlyExpenditure";
 import {inMemoryReportOfMonthlyExpenditureProjector} from "./InMemoryReportOfMonthlyExpenditureProjector";
-import {buildRentalEnded} from "../Rental/Ending/TestingMessages";
+import {aRentalEnded} from "../Rental/Ending/TestingMessages";
 import {aPriceOfTripWasCalculated} from "../Pricing/TestingMessages";
 
 const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOfMonthlyExpenditureProjector) => void = (subjectUnderTest) => {
@@ -41,7 +41,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
         it('Single trip', async () => {
             return scenario
                 .given(
-                    buildRentalEnded()
+                    aRentalEnded()
                         .with('agreementId', "agreement:11111111-1111-1111-1111-111111111111")
                         .andWith('vehicle', "NL:GGS-10-N")
                         .andWith('customerId', "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")
@@ -108,7 +108,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
         it('Multiple trips spanning different months', async () => {
             return scenario
                 .given(
-                    buildRentalEnded()
+                    aRentalEnded()
                         .with('agreementId', "agreement:11111111-1111-1111-1111-111111111111")
                         .andWith('vehicle', "NL:GGS-10-N")
                         .andWith('customerId', "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")
@@ -137,7 +137,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith("customerId", "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")
                         .toObject(),
 
-                    buildRentalEnded()
+                    aRentalEnded()
                         .with('agreementId', "agreement:22222222-2222-2222-2222-222222222222")
                         .andWith('vehicle', "NL:GGD-15-D")
                         .andWith('customerId', "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")
@@ -166,7 +166,7 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith("customerId", "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")
                         .toObject(),
 
-                    buildRentalEnded()
+                    aRentalEnded()
                         .with('agreementId', "agreement:33333333-3333-3333-3333-333333333333")
                         .andWith('vehicle', "NL:GGR-50-D")
                         .andWith('customerId', "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")

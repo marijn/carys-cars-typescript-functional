@@ -3,7 +3,7 @@ import {RentalEnded} from "./RentalEnded";
 import {builderFor} from "../../../Infrastructure/Messages/Builder";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
 
-export const buildRentalEnded = builderFor<RentalEnded, "Rental ended">({
+export const aRentalEnded = builderFor<RentalEnded, "Rental ended">({
     _named: "Rental ended",
     agreementId: 'agreement:7f6de6a3-90b5-4ba0-bb6a-297d7c9f2a61',
     customerId: 'customer:dae3ca24-b1e6-4f0e-85cb-0c4b9f5fab8b',
