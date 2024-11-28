@@ -30,6 +30,7 @@ describe('Please calculate price of trip', () => {
                 pricePerMinute: Dinero({amount: 35, currency: "EUR", precision: 2}),
                 totalPrice: Dinero({amount: 490, currency: "EUR", precision: 2}),
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
-            });
+            })
+            .assertScenario((() => { throw new Error('TODO: Implement me')});
     });
 });
