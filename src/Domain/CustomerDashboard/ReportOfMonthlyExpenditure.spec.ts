@@ -184,7 +184,6 @@ const testReportOfMonthlyExpenditureProjector: (subjectUnderTest: () => ReportOf
                         .andWith('endPosition', '52.34900, 4.87596')
                         .toObject(),
 
-
                     aPriceOfTripWasCalculated()
                         .with('tripId', 'trip:33333333-3333-3333-3333-333333333333')
                         .andWith('vehicle', "NL:GGR-50-D")

@@ -1,81 +1,15 @@
 import {describe, it} from "@jest/globals";
 import {CommandHandlingScenario} from "../../Infrastructure/Decider/Testing/CommandHandlingScenario";
-import {PriceOfTripWasCalculated} from "./PriceOfTripWasCalculated";
-import {PleaseCalculatePriceOfTrip} from "./PleaseCalculatePriceOfTrip";
 import {durationOfTripFromString} from "./DurationOfTrip";
 import Dinero from "dinero.js";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
-import {Decider} from "../../Infrastructure/Decider/Decider";
-import {launchingPricing, launchPricingPerMinute, PricingPolicy} from "./LaunchingPricing";
-
-type TripIsNotPriced = Readonly<{
-    _named: "TripIsNotPriced",
-}>;
-
-type TripIsPriced = Readonly<{
-    _named: "TripIsPriced",
-}>;
-
-type PricingEvents = | PriceOfTripWasCalculated;
-type PricingCommands = | PleaseCalculatePriceOfTrip;
-type PricingStates =
-    | TripIsNotPriced
-    | TripIsPriced;
-
-const buildPricingDecider: (pricingPolicy: PricingPolicy) => Decider<PricingCommands, PricingStates, PricingEvents, TripId> = (
-    pricingPolicy
-) => {
-    return {
-        decide(command: PricingCommands, state: PricingStates): Promise<PricingEvents[]> {
-            switch (command._named) {
-                case "Please calculate price of trip": {
-                    if ('TripIsPriced' === state._named) {
-                        return Promise.resolve([]);
-                    }
-
-                    return Promise.resolve([
-                        {
-                            _named: "Price of trip was calculated",
-                            tripId: command.tripId,
-                            vehicle: command.vehicle,
-                            agreementId: command.agreementId,
-                            durationOfTrip: command.durationOfTrip,
-                            tripDistance: command.tripDistance,
-                            pricePerMinute: launchPricingPerMinute,
-                            totalPrice: pricingPolicy(command.tripDistance, command.durationOfTrip),
-                            customerId: command.customerId,
-                        }
-                    ]);
-                }
-            }
-        },
-        evolve(state: PricingStates, event: PricingEvents): PricingStates {
-            switch (event._named) {
-                case "Price of trip was calculated": {
-                    return {
-                        _named: "TripIsPriced",
-                    };
-                }
-                default: {
-                    return state;
-                }
-            }
-        },
-        identify(command: PricingCommands): TripId {
-            throw new Error('TODO: Implement me');
-        },
-        initialState(): PricingStates {
-            return {
-                _named: "TripIsNotPriced",
-            };
-        }
-    };
-};
+import {launchingPricing} from "./LaunchingPricing";
+import {buildPricingDecider, PricingCommands, PricingEvents} from "./PricingDecider";
 
 describe('Please calculate price of trip', () => {
     const scenario = new CommandHandlingScenario<PricingEvents, PricingCommands>()
 
-    it('Happy path :-)', async () => {
+    it('Trip is NOT priced', async () => {
         const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
@@ -102,7 +36,7 @@ describe('Please calculate price of trip', () => {
             .assertScenario(runAssertionOnDecider(pricingDecider));
     });
 
-    it('is ignored when nothing changed', async () => {
+    it('Trip is priced', async () => {
         const pricingDecider = buildPricingDecider(launchingPricing);
 
         return scenario
