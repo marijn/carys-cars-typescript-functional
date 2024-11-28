@@ -7,7 +7,7 @@ import {
     ReportOfMonthlyExpenditureEvents,
     ReportOfMonthlyExpenditureProjector,
     ReportOfMonthlyExpenditureQueries,
-    Trip
+    HistoricTrip
 } from "./ReportOfMonthlyExpenditure";
 import {AgreementId} from "../Rental/AgreementId";
 import {RentalEnded} from "../Rental/Ending/RentalEnded";
@@ -16,7 +16,7 @@ import { CustomerId } from "../CustomerId";
 
 export const inMemoryReportOfMonthlyExpenditureProjector: () => ReportOfMonthlyExpenditureProjector = () => {
     const agreementsByAgreementId: { [key: AgreementId]: EndedRentalAgreement } = {};
-    const tripsByCustomer: { [key: CustomerId]: Partial<Record<ReportingMonth, Trip[]>> } = {};
+    const tripsByCustomer: { [key: CustomerId]: Partial<Record<ReportingMonth, HistoricTrip[]>> } = {};
 
     const askGetReportOfMonthlyExpenditureByCustomer: (
         query: ReportOfMonthlyExpenditureQueries

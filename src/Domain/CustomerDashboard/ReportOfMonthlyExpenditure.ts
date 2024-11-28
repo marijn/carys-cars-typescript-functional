@@ -25,7 +25,7 @@ type GetReportOfMonthlyExpenditureByCustomer = {
     month: ReportingMonth,
 };
 
-export type Trip = {
+export type HistoricTrip = {
     tripId: TripId,
     agreementId: AgreementId,
     vehicle: LicensePlate,
@@ -44,7 +44,7 @@ export type ReportOfMonthlyExpenditureByCustomer = {
     _named: 'Report of monthly expenditure by customer',
     customerId: CustomerId,
     month: ReportingMonth,
-    trips: Trip[]
+    trips: HistoricTrip[]
 };
 
 export type ReportOfMonthlyExpenditureEvents =
