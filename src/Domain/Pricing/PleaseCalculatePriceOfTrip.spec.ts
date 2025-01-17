@@ -7,6 +7,7 @@ import Dinero from "dinero.js";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
 import {Decider} from "../../Infrastructure/Decider/Decider";
 import {launchingPricing, launchPricingPerMinute, PricingPolicy} from "./LaunchingPricing";
+import {TripId} from "./TripId";
 
 type TripIsNotPriced = Readonly<{
     _named: "TripIsNotPriced",

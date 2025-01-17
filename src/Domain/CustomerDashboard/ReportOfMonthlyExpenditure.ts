@@ -8,6 +8,8 @@ import {ZonedDateTime} from "js-joda";
 import {LatitudeLongitude} from "../Rental/LatitudeLongitude";
 import Dinero from "dinero.js";
 import {Projector} from "../../Infrastructure/Projector/Projector";
+import {CustomerId} from "../CustomerId";
+import {TripId} from "../Pricing/TripId";
 
 export type AllMonths = | '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
 export type AllYears = `20${'2' | '3' | '4'}${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'}`
