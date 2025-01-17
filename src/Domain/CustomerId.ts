@@ -1,1 +1,1 @@
-type CustomerId = `customer:${string}`;
+export type CustomerId = `customer:${string}`;
