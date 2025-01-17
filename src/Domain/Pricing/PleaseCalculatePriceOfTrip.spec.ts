@@ -31,6 +31,6 @@ describe('Please calculate price of trip', () => {
                 totalPrice: Dinero({amount: 490, currency: "EUR", precision: 2}),
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
             })
-            .assertScenario((() => { throw new Error('TODO: Implement me')});
+            .assertScenario(() => { throw new Error('TODO: Implement me')});
     });
 });
