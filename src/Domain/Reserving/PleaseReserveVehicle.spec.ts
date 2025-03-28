@@ -154,38 +154,45 @@ type AnyReservingState =
     | VehicleIsAvailable
     | VehicleIsReserved
 
+function pleaseReserveVehicle(
+    state: AnyReservingState,
+    command: AnyReservingCommand
+): AnyReservingEvent[] {
+    switch (state._named) {
+        case "Vehicle is available": {
+            return [
+                {
+                    _named: "Vehicle was reserved",
+                    vehicle: command.vehicle,
+                    vehicleClass: state.vehicleClass,
+                    reservedBy: command.reservedBy,
+                    when: command.when,
+                }
+            ];
+        }
+        case "Vehicle is reserved": {
+            return [
+                {
+                    _named: "Vehicle could not be reserved",
+                    vehicle: command.vehicle,
+                    vehicleClass: state.vehicleClass,
+                    interestedCustomer: command.reservedBy,
+                    when: command.when,
+                    reason: "already reserved"
+                }
+            ];
+        }
+        default: {
+            return [];
+        }
+    }
+}
+
 const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command: AnyReservingCommand, state: AnyReservingState): Promise<AnyReservingEvent[]> {
         switch (command._named) {
             case "Please reserve vehicle!": {
-                switch (state._named) {
-                    case "Vehicle is available": {
-                        return [
-                            {
-                                _named: "Vehicle was reserved",
-                                vehicle: command.vehicle,
-                                vehicleClass: state.vehicleClass,
-                                reservedBy: command.reservedBy,
-                                when: command.when,
-                            }
-                        ];
-                    }
-                    case "Vehicle is reserved": {
-                        return [
-                            {
-                                _named: "Vehicle could not be reserved",
-                                vehicle: command.vehicle,
-                                vehicleClass: state.vehicleClass,
-                                interestedCustomer: command.reservedBy,
-                                when: command.when,
-                                reason: "already reserved"
-                            }
-                        ];
-                    }
-                    default: {
-                        return [];
-                    }
-                }
+                return pleaseReserveVehicle(state, command);
             }
         }
     },
