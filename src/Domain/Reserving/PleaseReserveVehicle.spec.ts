@@ -13,7 +13,7 @@ type VehicleClass =
     | 'long distance trips'
     | 'moving bulky things'
 
-type VehicleEnteredOperation = {
+type VehicleEnteredOperation = Readonly<{
     _named: 'Vehicle entered operation',
 
     /**
@@ -30,7 +30,7 @@ type VehicleEnteredOperation = {
      * @example 2024-11-02 16:59:01 Europe/Amsterdam
      */
     when: ZonedDateTime
-};
+}>;
 
 export const aVehicleEnteredOperation = builderFor<VehicleEnteredOperation, "Vehicle entered operation">({
     _named: 'Vehicle entered operation',
@@ -42,7 +42,7 @@ export const aVehicleEnteredOperation = builderFor<VehicleEnteredOperation, "Veh
     ),
 });
 
-type VehicleWasReserved = {
+type VehicleWasReserved = Readonly<{
     _named: "Vehicle was reserved",
 
     /**
@@ -64,7 +64,7 @@ type VehicleWasReserved = {
      * @example 2024-11-02 20:19:52.017351 Europe/Amsterdam
      */
     when: ZonedDateTime
-};
+}>;
 
 export const aVehicleWasReserved = builderFor<VehicleWasReserved, "Vehicle was reserved">({
     _named: "Vehicle was reserved",
@@ -78,7 +78,7 @@ export const aVehicleWasReserved = builderFor<VehicleWasReserved, "Vehicle was r
 });
 
 type ReservationRejectionReason = | "already reserved"
-type VehicleCouldNotBeReserved = {
+type VehicleCouldNotBeReserved = Readonly<{
     _named: "Vehicle could not be reserved",
 
     /**
@@ -105,9 +105,9 @@ type VehicleCouldNotBeReserved = {
      * @example "already reserved"
      */
     reason: ReservationRejectionReason
-};
+}>;
 
-type PleaseReserveVehicle = {
+type PleaseReserveVehicle = Readonly<{
     _named: "Please reserve vehicle!",
 
     /**
@@ -124,7 +124,7 @@ type PleaseReserveVehicle = {
      * @example 2024-11-02 20:19:52.017351 Europe/Amsterdam
      */
     when: ZonedDateTime
-};
+}>;
 
 type AnyReservingEvent =
     | VehicleEnteredOperation
