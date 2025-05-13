@@ -166,22 +166,24 @@ function decideToReserveVehicle(command: AnyReservingCommand, state: VehicleIsAv
     ];
 }
 
+const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsReserved): AnyReservingEvent[] => [
+    {
+        _named: "Vehicle could not be reserved",
+        vehicle: command.vehicle,
+        vehicleClass: state.vehicleClass,
+        interestedCustomer: command.reservedBy,
+        when: command.when,
+        reason: "already reserved"
+    }
+];
+
 const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
     switch (state._named) {
         case "Vehicle is available": {
             return decideToReserveVehicle(command, state);
         }
         case "Vehicle is reserved": {
-            return [
-                {
-                    _named: "Vehicle could not be reserved",
-                    vehicle: command.vehicle,
-                    vehicleClass: state.vehicleClass,
-                    interestedCustomer: command.reservedBy,
-                    when: command.when,
-                    reason: "already reserved"
-                }
-            ];
+            return decideNotToReserveVehicle(command, state);
         }
         default: {
             return [];
