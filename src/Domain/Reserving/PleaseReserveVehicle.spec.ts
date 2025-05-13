@@ -193,12 +193,12 @@ const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingSt
     }
 };
 
-const evolveOnVehicleEnteredOperation = (event: VehicleEnteredOperation): AnyReservingState => ({
+const evolveOnVehicleEnteredOperation = (state: AnyReservingState, event: VehicleEnteredOperation): AnyReservingState => ({
     _named: "Vehicle is available",
     vehicleClass: event.vehicleClass
 });
 
-function evolveOnVehicleWasReserved(event: VehicleWasReserved): AnyReservingState {
+function evolveOnVehicleWasReserved(state: AnyReservingState, event: VehicleWasReserved): AnyReservingState {
     return {_named: "Vehicle is reserved", reservedBy: event.reservedBy, vehicleClass: event.vehicleClass}
 }
 
@@ -213,10 +213,10 @@ const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent
     evolve(state, event) {
         switch (event._named) {
             case "Vehicle entered operation": {
-                return evolveOnVehicleEnteredOperation(event);
+                return evolveOnVehicleEnteredOperation(state, event);
             }
             case "Vehicle was reserved": {
-                return evolveOnVehicleWasReserved(event);
+                return evolveOnVehicleWasReserved(state, event);
             }
             default: {
                 return state;
