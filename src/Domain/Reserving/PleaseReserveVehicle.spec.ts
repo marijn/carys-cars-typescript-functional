@@ -154,7 +154,7 @@ type AnyReservingState =
     | VehicleIsAvailable
     | VehicleIsReserved
 
-const pleaseReserveVehicle = (state: AnyReservingState, command: AnyReservingCommand): AnyReservingEvent[] => {
+const pleaseReserveVehicle = (command: AnyReservingCommand, state: AnyReservingState): AnyReservingEvent[] => {
     switch (state._named) {
         case "Vehicle is available": {
             return [
@@ -186,10 +186,10 @@ const pleaseReserveVehicle = (state: AnyReservingState, command: AnyReservingCom
 };
 
 const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
-    async decide(command: AnyReservingCommand, state: AnyReservingState): Promise<AnyReservingEvent[]> {
+    async decide(command, state) {
         switch (command._named) {
             case "Please reserve vehicle!": {
-                return pleaseReserveVehicle(state, command);
+                return pleaseReserveVehicle(command, state);
             }
         }
     },
