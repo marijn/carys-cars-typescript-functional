@@ -186,7 +186,8 @@ const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingSt
             return decideNotToReserveVehicle(command, state);
         }
         default: {
-            return [];
+            const events: AnyReservingEvent[] = [];
+            return events;
         }
     }
 };
