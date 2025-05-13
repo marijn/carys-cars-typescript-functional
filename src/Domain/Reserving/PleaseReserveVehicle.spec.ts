@@ -154,7 +154,7 @@ type AnyReservingState =
     | VehicleIsAvailable
     | VehicleIsReserved
 
-const pleaseReserveVehicle = (command: AnyReservingCommand, state: AnyReservingState): AnyReservingEvent[] => {
+const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
     switch (state._named) {
         case "Vehicle is available": {
             return [
@@ -193,7 +193,7 @@ const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent
             }
         }
     },
-    evolve(state: AnyReservingState, event: AnyReservingEvent): AnyReservingState {
+    evolve(state, event) {
         switch (event._named) {
             case "Vehicle entered operation": {
                 return {_named: "Vehicle is available", vehicleClass: event.vehicleClass}
