@@ -178,9 +178,7 @@ const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleI
 ];
 
 const decideToDoNothing = (): AnyReservingEvent[] => {
-    const events: AnyReservingEvent[] = [];
-
-    return events;
+    return [];
 };
 
 const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
