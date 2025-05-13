@@ -198,6 +198,10 @@ const evolveOnVehicleEnteredOperation = (event: VehicleEnteredOperation): AnyRes
     vehicleClass: event.vehicleClass
 });
 
+function evolveOnVehicleWasReserved(event: VehicleWasReserved): AnyReservingState {
+    return {_named: "Vehicle is reserved", reservedBy: event.reservedBy, vehicleClass: event.vehicleClass}
+}
+
 const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command, state) {
         switch (command._named) {
@@ -212,7 +216,7 @@ const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent
                 return evolveOnVehicleEnteredOperation(event);
             }
             case "Vehicle was reserved": {
-                return {_named: "Vehicle is reserved", reservedBy: event.reservedBy, vehicleClass: event.vehicleClass}
+                return evolveOnVehicleWasReserved(event);
             }
             default: {
                 return state;
