@@ -134,20 +134,81 @@ type AnyReservingEvent =
 type AnyReservingCommand =
     | PleaseReserveVehicle
 
-type AnyReservingState = {}
+type VehicleIsUnavailable = {
+    _named: "Vehicle is unavailable"
+}
+
+type VehicleIsAvailable = {
+    _named: "Vehicle is available"
+    vehicleClass: VehicleClass,
+}
+
+type VehicleIsReserved = {
+    _named: "Vehicle is reserved",
+    vehicleClass: VehicleClass,
+    reservedBy: CustomerId
+}
+
+type AnyReservingState =
+    | VehicleIsUnavailable
+    | VehicleIsAvailable
+    | VehicleIsReserved
 
 const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command: AnyReservingCommand, state: AnyReservingState): Promise<AnyReservingEvent[]> {
-        throw new Error('TODO: Implement me');
+        switch (command._named) {
+            case "Please reserve vehicle!": {
+                switch (state._named) {
+                    case "Vehicle is available": {
+                        return [
+                            {
+                                _named: "Vehicle was reserved",
+                                vehicle: command.vehicle,
+                                vehicleClass: state.vehicleClass,
+                                reservedBy: command.reservedBy,
+                                when: command.when,
+                            }
+                        ];
+                    }
+                    case "Vehicle is reserved": {
+                        return [
+                            {
+                                _named: "Vehicle could not be reserved",
+                                vehicle: command.vehicle,
+                                vehicleClass: state.vehicleClass,
+                                interestedCustomer: command.reservedBy,
+                                when: command.when,
+                                reason: "already reserved"
+                            }
+                        ];
+                    }
+                    default: {
+                        return [];
+                    }
+                }
+            }
+        }
     },
     evolve(state: AnyReservingState, event: AnyReservingEvent): AnyReservingState {
-        throw new Error('TODO: Implement me');
+        switch (event._named) {
+            case "Vehicle entered operation": {
+                return {_named: "Vehicle is available", vehicleClass: event.vehicleClass}
+            }
+            case "Vehicle was reserved": {
+                return {_named: "Vehicle is reserved", reservedBy: event.reservedBy, vehicleClass: event.vehicleClass}
+            }
+            default: {
+                return state;
+            }
+        }
     },
     identify(command: AnyReservingCommand): LicensePlate {
         throw new Error('TODO: Implement me');
     },
     initialState(): AnyReservingState {
-        throw new Error('TODO: Implement me');
+        return {
+            _named: "Vehicle is unavailable",
+        };
     }
 };
 
