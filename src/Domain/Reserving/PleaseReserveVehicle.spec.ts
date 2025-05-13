@@ -177,6 +177,12 @@ const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleI
     }
 ];
 
+const decideToDoNothing = (): AnyReservingEvent[] => {
+    const events: AnyReservingEvent[] = [];
+
+    return events;
+};
+
 const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
     switch (state._named) {
         case "Vehicle is available": {
@@ -186,8 +192,7 @@ const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingSt
             return decideNotToReserveVehicle(command, state);
         }
         default: {
-            const events: AnyReservingEvent[] = [];
-            return events;
+            return decideToDoNothing();
         }
     }
 };
