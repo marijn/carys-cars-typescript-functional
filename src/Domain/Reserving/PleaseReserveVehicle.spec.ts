@@ -177,9 +177,7 @@ const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleI
     }
 ];
 
-const decideToDoNothing = (): AnyReservingEvent[] => {
-    return [];
-};
+const decideToDoNothing = (): AnyReservingEvent[] => [];
 
 const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
     switch (state._named) {
