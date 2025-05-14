@@ -1,36 +1,15 @@
 import {describe, test} from "@jest/globals";
 import {CommandHandlingScenario} from "../../Infrastructure/Decider/Testing/CommandHandlingScenario";
 import {runAssertionOnDecider} from "../../Infrastructure/Decider/Testing/runAssertionOnDecider";
-import {LicensePlate} from "../LicensePlate";
 import {LocalDateTime, ZonedDateTime, ZoneId} from "js-joda";
-import {CustomerId} from "../CustomerId";
 import {builderFor} from "../../Infrastructure/Messages/Builder";
-import {Decider} from "../../Infrastructure/Decider/Decider";
-
-type VehicleClass =
-    | 'in and around the city'
-    | 'fun vehicles'
-    | 'long distance trips'
-    | 'moving bulky things'
-
-type VehicleEnteredOperation = Readonly<{
-    _named: 'Vehicle entered operation',
-
-    /**
-     * @example "DE:M-CC-0001"
-     */
-    vehicle: LicensePlate,
-
-    /**
-     * @example "fun vehicles"
-     */
-    vehicleClass: VehicleClass,
-
-    /**
-     * @example 2024-11-02 16:59:01 Europe/Amsterdam
-     */
-    when: ZonedDateTime
-}>;
+import {
+    AnyReservingCommand,
+    AnyReservingEvent,
+    vehicleDecider,
+    VehicleEnteredOperation,
+    VehicleWasReserved
+} from "./VehicleDecider";
 
 export const aVehicleEnteredOperation = builderFor<VehicleEnteredOperation, "Vehicle entered operation">({
     _named: 'Vehicle entered operation',
@@ -42,30 +21,6 @@ export const aVehicleEnteredOperation = builderFor<VehicleEnteredOperation, "Veh
     ),
 });
 
-type VehicleWasReserved = Readonly<{
-    _named: "Vehicle was reserved",
-
-    /**
-     * @example "DE:M-CC-0001"
-     */
-    vehicle: LicensePlate,
-
-    /**
-     * @example "fun vehicles"
-     */
-    vehicleClass: VehicleClass,
-
-    /**
-     * @example "customer:dae3ca24-b1e6-4f0e-85cb-0c4b9f5fab8b"
-     */
-    reservedBy: CustomerId,
-
-    /**
-     * @example 2024-11-02 20:19:52.017351 Europe/Amsterdam
-     */
-    when: ZonedDateTime
-}>;
-
 export const aVehicleWasReserved = builderFor<VehicleWasReserved, "Vehicle was reserved">({
     _named: "Vehicle was reserved",
     vehicle: "DE:M-CC-0001",
@@ -76,162 +31,6 @@ export const aVehicleWasReserved = builderFor<VehicleWasReserved, "Vehicle was r
         ZoneId.of("UTC+2")
     )
 });
-
-type ReservationRejectionReason = | "already reserved"
-type VehicleCouldNotBeReserved = Readonly<{
-    _named: "Vehicle could not be reserved",
-
-    /**
-     * @example "DE:M-CC-0001"
-     */
-    vehicle: LicensePlate,
-
-    /**
-     * @example "fun vehicles"
-     */
-    vehicleClass: VehicleClass,
-
-    /**
-     * @example "customer:dae3ca24-b1e6-4f0e-85cb-0c4b9f5fab8b"
-     */
-    interestedCustomer: CustomerId,
-
-    /**
-     * @example 2024-11-02 20:19:52.017351 Europe/Amsterdam
-     */
-    when: ZonedDateTime,
-
-    /**
-     * @example "already reserved"
-     */
-    reason: ReservationRejectionReason
-}>;
-
-type PleaseReserveVehicle = Readonly<{
-    _named: "Please reserve vehicle!",
-
-    /**
-     * @example DE:M-CC-0001
-     */
-    vehicle: LicensePlate,
-
-    /**
-     * @example customer:dae3ca24-b1e6-4f0e-85cb-0c4b9f5fab8b
-     */
-    reservedBy: CustomerId,
-
-    /**
-     * @example 2024-11-02 20:19:52.017351 Europe/Amsterdam
-     */
-    when: ZonedDateTime
-}>;
-
-type AnyReservingEvent =
-    | VehicleEnteredOperation
-    | VehicleCouldNotBeReserved
-    | VehicleWasReserved
-
-type AnyReservingCommand =
-    | PleaseReserveVehicle
-
-type VehicleIsUnavailable = {
-    _named: "Vehicle is unavailable"
-}
-
-type VehicleIsAvailable = {
-    _named: "Vehicle is available"
-    vehicleClass: VehicleClass,
-}
-
-type VehicleIsReserved = {
-    _named: "Vehicle is reserved",
-    vehicleClass: VehicleClass,
-    reservedBy: CustomerId
-}
-
-type AnyReservingState =
-    | VehicleIsUnavailable
-    | VehicleIsAvailable
-    | VehicleIsReserved
-
-const decideToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsAvailable): AnyReservingEvent[] => [
-    {
-        _named: "Vehicle was reserved",
-        vehicle: command.vehicle,
-        vehicleClass: state.vehicleClass,
-        reservedBy: command.reservedBy,
-        when: command.when,
-    }
-];
-
-const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsReserved): AnyReservingEvent[] => [
-    {
-        _named: "Vehicle could not be reserved",
-        vehicle: command.vehicle,
-        vehicleClass: state.vehicleClass,
-        interestedCustomer: command.reservedBy,
-        when: command.when,
-        reason: "already reserved"
-    }
-];
-
-const decideToDoNothing = (): AnyReservingEvent[] => [];
-
-const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
-    switch (state._named) {
-        case "Vehicle is available": {
-            return decideToReserveVehicle(command, state);
-        }
-        case "Vehicle is reserved": {
-            return decideNotToReserveVehicle(command, state);
-        }
-        default: {
-            return decideToDoNothing();
-        }
-    }
-};
-
-const evolveOnVehicleEnteredOperation = (state: AnyReservingState, event: VehicleEnteredOperation): AnyReservingState => ({
-    _named: "Vehicle is available",
-    vehicleClass: event.vehicleClass
-});
-
-const evolveOnVehicleWasReserved = (state: AnyReservingState, event: VehicleWasReserved): AnyReservingState => ({
-    _named: "Vehicle is reserved",
-    reservedBy: event.reservedBy,
-    vehicleClass: event.vehicleClass
-});
-
-const vehicleDecider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
-    async decide(command, state) {
-        switch (command._named) {
-            case "Please reserve vehicle!": {
-                return pleaseReserveVehicle(command, state);
-            }
-        }
-    },
-    evolve(state, event) {
-        switch (event._named) {
-            case "Vehicle entered operation": {
-                return evolveOnVehicleEnteredOperation(state, event);
-            }
-            case "Vehicle was reserved": {
-                return evolveOnVehicleWasReserved(state, event);
-            }
-            default: {
-                return state;
-            }
-        }
-    },
-    identify(command: AnyReservingCommand): LicensePlate {
-        throw new Error('TODO: Implement me');
-    },
-    initialState(): AnyReservingState {
-        return {
-            _named: "Vehicle is unavailable",
-        };
-    }
-};
 
 describe('Please reserve vehicle', () => {
     const scenario = new CommandHandlingScenario<AnyReservingEvent, AnyReservingCommand>()
