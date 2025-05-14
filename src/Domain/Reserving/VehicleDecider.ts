@@ -47,9 +47,9 @@ export type VehicleWasReserved = Readonly<{
     when: ZonedDateTime
 }>;
 
-type ReservationRejectionReason = | "already reserved"
+export type ReservationRejectionReason = | "already reserved"
 
-type VehicleCouldNotBeReserved = Readonly<{
+export type VehicleCouldNotBeReserved = Readonly<{
     _named: "Vehicle could not be reserved",
 
     /**
@@ -83,7 +83,7 @@ export type AnyReservingEvent =
     | VehicleCouldNotBeReserved
     | VehicleWasReserved
 
-type PleaseReserveVehicle = Readonly<{
+export type PleaseReserveVehicle = Readonly<{
     _named: "Please reserve vehicle!",
 
     /**
@@ -105,7 +105,7 @@ type PleaseReserveVehicle = Readonly<{
 export type AnyReservingCommand =
     | PleaseReserveVehicle
 
-type VehicleIsUnavailable = {
+export type VehicleIsUnavailable = {
     _named: "Vehicle is unavailable"
 }
 
