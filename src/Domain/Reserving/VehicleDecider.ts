@@ -2,12 +2,8 @@ import {LicensePlate} from "../LicensePlate";
 import {CustomerId} from "../CustomerId";
 import {ZonedDateTime} from "js-joda";
 import {Decider} from "../../Infrastructure/Decider/Decider";
+import {VehicleClass} from "./VehicleClass";
 
-type VehicleClass =
-    | 'in and around the city'
-    | 'fun vehicles'
-    | 'long distance trips'
-    | 'moving bulky things'
 export type VehicleEnteredOperation = Readonly<{
     _named: 'Vehicle entered operation',
 
