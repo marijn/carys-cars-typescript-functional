@@ -196,9 +196,11 @@ const evolveOnVehicleEnteredOperation = (state: AnyReservingState, event: Vehicl
     vehicleClass: event.vehicleClass
 });
 
-function evolveOnVehicleWasReserved(state: AnyReservingState, event: VehicleWasReserved): AnyReservingState {
-    return {_named: "Vehicle is reserved", reservedBy: event.reservedBy, vehicleClass: event.vehicleClass}
-}
+const evolveOnVehicleWasReserved = (state: AnyReservingState, event: VehicleWasReserved): AnyReservingState => ({
+    _named: "Vehicle is reserved",
+    reservedBy: event.reservedBy,
+    vehicleClass: event.vehicleClass
+});
 
 const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command, state) {
