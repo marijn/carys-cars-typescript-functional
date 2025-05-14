@@ -22,6 +22,7 @@ export type VehicleEnteredOperation = Readonly<{
      */
     when: ZonedDateTime
 }>;
+
 export type VehicleWasReserved = Readonly<{
     _named: "Vehicle was reserved",
 
@@ -45,7 +46,9 @@ export type VehicleWasReserved = Readonly<{
      */
     when: ZonedDateTime
 }>;
+
 type ReservationRejectionReason = | "already reserved"
+
 type VehicleCouldNotBeReserved = Readonly<{
     _named: "Vehicle could not be reserved",
 
@@ -74,6 +77,12 @@ type VehicleCouldNotBeReserved = Readonly<{
      */
     reason: ReservationRejectionReason
 }>;
+
+export type AnyReservingEvent =
+    | VehicleEnteredOperation
+    | VehicleCouldNotBeReserved
+    | VehicleWasReserved
+
 type PleaseReserveVehicle = Readonly<{
     _named: "Please reserve vehicle!",
 
@@ -92,28 +101,30 @@ type PleaseReserveVehicle = Readonly<{
      */
     when: ZonedDateTime
 }>;
-export type AnyReservingEvent =
-    | VehicleEnteredOperation
-    | VehicleCouldNotBeReserved
-    | VehicleWasReserved
+
 export type AnyReservingCommand =
     | PleaseReserveVehicle
+
 type VehicleIsUnavailable = {
     _named: "Vehicle is unavailable"
 }
+
 type VehicleIsAvailable = {
     _named: "Vehicle is available"
     vehicleClass: VehicleClass,
 }
+
 type VehicleIsReserved = {
     _named: "Vehicle is reserved",
     vehicleClass: VehicleClass,
     reservedBy: CustomerId
 }
+
 type AnyReservingState =
     | VehicleIsUnavailable
     | VehicleIsAvailable
     | VehicleIsReserved
+
 const decideToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsAvailable): AnyReservingEvent[] => [
     {
         _named: "Vehicle was reserved",
@@ -123,6 +134,7 @@ const decideToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsAv
         when: command.when,
     }
 ];
+
 const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsReserved): AnyReservingEvent[] => [
     {
         _named: "Vehicle could not be reserved",
@@ -133,7 +145,9 @@ const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleI
         reason: "already reserved"
     }
 ];
+
 const decideToDoNothing = (): AnyReservingEvent[] => [];
+
 const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingState) => AnyReservingEvent[] = (command, state) => {
     switch (state._named) {
         case "Vehicle is available": {
@@ -147,15 +161,18 @@ const pleaseReserveVehicle: (command: AnyReservingCommand, state: AnyReservingSt
         }
     }
 };
+
 const evolveOnVehicleEnteredOperation = (state: AnyReservingState, event: VehicleEnteredOperation): AnyReservingState => ({
     _named: "Vehicle is available",
     vehicleClass: event.vehicleClass
 });
+
 const evolveOnVehicleWasReserved = (state: AnyReservingState, event: VehicleWasReserved): AnyReservingState => ({
     _named: "Vehicle is reserved",
     reservedBy: event.reservedBy,
     vehicleClass: event.vehicleClass
 });
+
 export const vehicleDecider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command, state) {
         switch (command._named) {
