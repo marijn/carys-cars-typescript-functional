@@ -202,7 +202,7 @@ const evolveOnVehicleWasReserved = (state: AnyReservingState, event: VehicleWasR
     vehicleClass: event.vehicleClass
 });
 
-const decider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
+const vehicleDecider: Decider<AnyReservingCommand, AnyReservingState, AnyReservingEvent, LicensePlate> = {
     async decide(command, state) {
         switch (command._named) {
             case "Please reserve vehicle!": {
@@ -263,7 +263,7 @@ describe('Please reserve vehicle', () => {
                     ZoneId.of("UTC+2")
                 )
             })
-            .assertScenario(runAssertionOnDecider(decider));
+            .assertScenario(runAssertionOnDecider(vehicleDecider));
     });
 
     test('Vehicle is reserved', async () => {
@@ -299,6 +299,6 @@ describe('Please reserve vehicle', () => {
                 ),
                 reason: "already reserved"
             })
-            .assertScenario(runAssertionOnDecider(decider));
+            .assertScenario(runAssertionOnDecider(vehicleDecider));
     });
 });
