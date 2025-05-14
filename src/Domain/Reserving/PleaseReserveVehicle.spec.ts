@@ -154,17 +154,15 @@ type AnyReservingState =
     | VehicleIsAvailable
     | VehicleIsReserved
 
-function decideToReserveVehicle(command: AnyReservingCommand, state: VehicleIsAvailable): AnyReservingEvent[] {
-    return [
-        {
-            _named: "Vehicle was reserved",
-            vehicle: command.vehicle,
-            vehicleClass: state.vehicleClass,
-            reservedBy: command.reservedBy,
-            when: command.when,
-        }
-    ];
-}
+const decideToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsAvailable): AnyReservingEvent[] => [
+    {
+        _named: "Vehicle was reserved",
+        vehicle: command.vehicle,
+        vehicleClass: state.vehicleClass,
+        reservedBy: command.reservedBy,
+        when: command.when,
+    }
+];
 
 const decideNotToReserveVehicle = (command: AnyReservingCommand, state: VehicleIsReserved): AnyReservingEvent[] => [
     {
