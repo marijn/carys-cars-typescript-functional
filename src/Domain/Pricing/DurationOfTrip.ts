@@ -24,11 +24,17 @@ export const durationOfTripFromString: (input: string) => DurationOfTrip = (inpu
 
 export const durationOfTripFromStartAndEnd: (start: ZonedDateTime, end: ZonedDateTime) => DurationOfTrip = (start, end) => {
     const delta = Duration.between(start, end);
-
+    const days = delta.toDays();
+    let latestStart = start.plusDays(days);
+    let remainder = Duration.between(latestStart, end);
+    const hours = remainder.toHours();
+    latestStart = latestStart.plusHours(hours);
+    remainder = Duration.between(latestStart, end);
+    const minutes = remainder.toMinutes()
     return {
-        days: delta.toDays(),
-        hours: delta.toHours(),
-        minutes: delta.toMinutes(),
+        days,
+        hours,
+        minutes,
         _brand: durationOfTripBrand
     }
 };
