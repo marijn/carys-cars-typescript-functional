@@ -37,4 +37,20 @@ describe('Duration of trip', () => {
         const expected = durationOfTripFromString('00d 00h 17m');
         expect(actual).toEqual(expected);
     })
+
+    it('is deduced from two dates', () => {
+        const start: ZonedDateTime = ZonedDateTime.of(
+            LocalDateTime.parse("2024-09-11T10:22"),
+            ZoneId.of("UTC+2")
+        );
+        const end: ZonedDateTime = ZonedDateTime.of(
+            LocalDateTime.parse("2024-09-12T10:39"),
+            ZoneId.of("UTC+2")
+        );
+
+        const actual = durationOfTripFromStartAndEnd(start, end)
+
+        const expected = durationOfTripFromString('01d 00h 17m');
+        expect(actual).toEqual(expected);
+    })
 });
