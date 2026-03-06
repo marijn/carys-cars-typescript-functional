@@ -28,7 +28,7 @@ describe('Please calculate price of trip', () => {
                 durationOfTrip: durationOfTripFromString("00d 00h 17m"),
                 tripDistance: "19.0 km",
                 pricePerMinute: Dinero({amount: 35, currency: "EUR", precision: 2}),
-                totalPrice: Dinero({amount: 490, currency: "EUR", precision: 2}),
+                totalPrice: Dinero({amount: 595, currency: "EUR", precision: 2}),
                 customerId: "customer:AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
             })
             .assertScenario(() => { throw new Error('TODO: Implement me')});
